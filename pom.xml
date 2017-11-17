@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <project xmlns="http://maven.apache.org/POM/4.0.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- - - - - - - - - - - -
+    -   Project Information  -
+    - - - - - - - - - - - - -->
+    <name>orbisserver</name>
+    <description>
+        Orbisserver is Web application for data loading, process execution and data sharing, based on the
+        Wisdom framework, OGC services and OrbisGIS libraries. The application includes a base built on the
+        wisdom-framework library, a basic server, its api allowing the creation of different services and
+        services implementing OGC standards.
+        OrbisServer is part of the OrbisGIS platform
+
+        OrbisGIS is a java GIS application dedicated to research in GIScience.
+        OrbisGIS is developed by the GIS group of the DECIDE team of the
+        Lab-STICC CNRS laboratory, see http://www.lab-sticc.fr/.
+
+        The GIS group of the DECIDE team is located at :
+
+        Laboratoire Lab-STICC – CNRS UMR 6285
+        Equipe DECIDE
+        UNIVERSITÉ DE BRETAGNE-SUD
+        Institut Universitaire de Technologie de Vannes
+        8, Rue Montaigne - BP 561 56017 Vannes Cedex
+
+        OrbisServer is distributed under LGPL 3 license.
+
+        Copyright (C) 2017 CNRS (Lab-STICC UMR CNRS 6285)
+    </description>
+    <url>https://github.com/orbisgis/orbisserver</url>
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License (LGPLV3)</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+        </license>
+    </licenses>
+    <organization>
+        <name>Lab-STICC - UMR CNRS 6285</name>
+        <url>http://www.labsticc.fr/</url>
+    </organization>
+    <developers>
+        <developer>
+            <name>Erwan Bocher</name>
+            <organization>Lab-STICC - CNRS UMR 6285</organization>
+            <organizationUrl>http://www.lab-sticc.fr/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Sylvain Palominos</name>
+            <organization>Lab-STICC - CNRS UMR 6285</organization>
+            <organizationUrl>http://www.lab-sticc.fr/</organizationUrl>
+        </developer>
+    </developers>
+    <contributors>
+    </contributors>
+
+    <!-- - - - - - -
+    -  The basics  -
+    - - - - - - - -->
+    <groupId>org.orbisgis</groupId>
+    <artifactId>orbisserver</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <parent>
+        <groupId>org.orbisgis</groupId>
+        <artifactId>orbisgis-nexus</artifactId>
+        <version>3</version>
+    </parent>
+    <modules>
+        <module>core</module>
+        <module>baseserver-api</module>
+        <module>baseserver</module>
+        <module>wpsservice</module>
+    </modules>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Pom dependencies version -->
+        <maven-compiler-plugin-version>2.3.2</maven-compiler-plugin-version>
+        <maven-jar-plugin-version>2.4</maven-jar-plugin-version>
+
+        <!-- Common Dependencies version -->
+        <common-cli-version>1.2</common-cli-version>
+        <commons-io-version>2.4</commons-io-version>
+        <gettext-commons-version>0.9.8</gettext-commons-version>
+        <gettext-maven-plugin-version>1.2.4</gettext-maven-plugin-version>
+        <junit-version>4.10</junit-version>
+        <maven-bundle-plugin-version>2.3.7</maven-bundle-plugin-version>
+        <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
+        <maven-scr-plugin-version>1.15.0</maven-scr-plugin-version>
+        <ogc-commons-version>1.3-SNAPSHOT</ogc-commons-version>
+        <org.apache.felix.scr.ds-annotations-version>1.2.4</org.apache.felix.scr.ds-annotations-version>
+        <org.osgi.core-version>4.3.1</org.osgi.core-version>
+        <org.osgi.enterprise-version>5.0.0</org.osgi.enterprise-version>
+        <sl4j-version>1.6.0</sl4j-version>
+        <wisdom-version>0.10.0</wisdom-version>
+    </properties>
+
+    <!-- - - - - - - -
+    -  Dependencies  -
+    - - - - - - - - -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Define all the versions of the dependencies provided by Wisdom -->
+                <groupId>org.wisdom-framework</groupId>
+                <artifactId>wisdom-bom</artifactId>
+                <version>${wisdom-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>3.1.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>jquery</artifactId>
+                <version>2.1.0-2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.googlecode.gettext-commons</groupId>
+                <artifactId>gettext-commons</artifactId>
+                <version>${gettext-commons-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wisdom-framework</groupId>
+                <artifactId>h2</artifactId>
+                <version>1.4.193_1-SNAPSHOT</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wisdom-framework</groupId>
+                <artifactId>wisdom-jdbc-datasources</artifactId>
+                <version>0.5</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- - - - - - - - -
+    -  Build Settings  -
+    - - - - - - - - - -->
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.wisdom-framework</groupId>
+                    <artifactId>wisdom-maven-plugin</artifactId>
+                    <version>${wisdom-version}</version>
+                    <extensions>true</extensions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin-version}</version>
+                    <configuration>
+                        <source>1.7</source>
+                        <target>1.7</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin-version}</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            </manifest>
+                            <manifestEntries>
+                                <Specification-Vendor-URL>${project.organization.url}</Specification-Vendor-URL>
+                                <Specification-URL>${project.url}</Specification-URL>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.googlecode.gettext-commons</groupId>
+                    <version>${gettext-maven-plugin-version}</version>
+                    <executions>
+                        <execution>
+                            <id>convert-po-class</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>dist</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <artifactId>gettext-maven-plugin</artifactId>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!-- - - - - - - - - - - -
+    -  Environment Settings  -
+    - - - - - - - - - - - - -->
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/orbisgis/orbisserver/issues</url>
+    </issueManagement>
+    <scm>
+        <connection>scm:git:https://github.com/orbisgis/orbisserver.git</connection>
+        <developerConnection>scm:git:https://github.com/orbisgis/orbisserver.git</developerConnection>
+        <url>git@github.com:orbisgis/orbisserver.git</url>
+    </scm>
+    <repositories>
+        <repository>
+            <id>OrbisGIS</id>
+            <name>OrbisGIS repository</name>
+            <url>http://repo.orbisgis.org</url>
+        </repository>
+        <repository>
+            <id>repo2.maven.org</id>
+            <name>Maven2 repository 2</name>
+            <url>http://repo2.maven.org/maven2</url>
+        </repository>
+    </repositories>
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
+</project>
+

@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-15 16:37+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: org/orbisgis/orbisserver/control/xml/GetCapabilitiesController.java:107
+#, java-format
+msgid ""
+"Unable to parse the incoming xml. \n"
+"Cause : {0}."
+msgstr ""
+
+#: org/orbisgis/orbisserver/control/xml/GetCapabilitiesController.java:111
+msgid "The request was not properly written"
+msgstr ""
+
+#: org/orbisgis/orbisserver/control/xml/GetCapabilitiesController.java:114
+msgid "You need to enter the request to get the corresponding xml file"
+msgstr ""
+
+#: org/orbisgis/orbisserver/control/xml/GetCapabilitiesController.java:117
+msgid "Please enter a good version of wps, it should be 2.0.0"
+msgstr ""
+
+#: org/orbisgis/orbisserver/control/xml/GetCapabilitiesController.java:120
+msgid "You need to enter the version of wps to get the corresponding xml file"
+msgstr ""
+
+#: org/orbisgis/orbisserver/control/xml/GetCapabilitiesController.java:123
+msgid "The service was not properly written, it should be wps here"
+msgstr ""
+
+#: org/orbisgis/orbisserver/control/xml/GetCapabilitiesController.java:126
+msgid "You need to enter a service to do queries, it should be wps here"
+msgstr ""
+
+#: org/orbisgis/orbisserver/control/web/IndexController.java:123
+#, java-format
+msgid "Test error message {0}"
+msgstr ""

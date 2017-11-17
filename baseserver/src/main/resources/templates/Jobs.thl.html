@@ -1,0 +1,165 @@
+<!--
+- OrbisServer is an OSGI web application to expose OGC services.
+-
+- OrbisServer Is a part of the OrbisGIS platform.
+-
+- OrbisGIS is a java GIS application dedicated to research in GIScience.
+- OrbisGIS is developed by the GIS group of the DECIDE team of the
+- Lab-STICC CNRS laboratory, see <http://www.lab-sticc.fr/>.
+-
+- The GIS group of the DECIDE team is located at :
+-
+- Laboratoire Lab-STICC – CNRS UMR 6285
+- Equipe DECIDE
+- UNIVERSITÉ DE BRETAGNE-SUD
+- Institut Universitaire de Technologie de Vannes
+- 8, Rue Montaigne - BP 561 56017 Vannes Cedex
+-
+- OrbisServer is distributed under LGPL 3 license.
+-
+- Copyright (C) 2015-2017 CNRS (Lab-STICC UMR CNRS 6285)
+-
+-
+- OrbisServer is free software: you can redistribute it and/or modify it under the
+- terms of the GNU Lesser General Public License as published by the Free Software
+- Foundation, either version 3 of the License, or (at your option) any later
+- version.
+-
+- OrbisServer is distributed in the hope that it will be useful, but WITHOUT ANY
+- WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+- A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+-
+- You should have received a copy of the GNU Lesser General Public License along with
+- OrbisServer. If not, see <http://www.gnu.org/licenses/>.
+-
+- For more information, please consult: <http://www.orbisgis.org/>
+- or contact directly:
+- info_at_ orbisgis.org
+-->
+
+<style type="text/css">
+    .gly-spin {
+        -webkit-animation: spin 2s infinite linear;
+        -moz-animation: spin 2s infinite linear;
+        -o-animation: spin 2s infinite linear;
+        animation: spin 2s infinite linear;
+    }
+    @-moz-keyframes spin {
+        0% {
+            -moz-transform: rotate(0deg);
+        }
+        100% {
+            -moz-transform: rotate(359deg);
+        }
+    }
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(359deg);
+        }
+    }
+    @-o-keyframes spin {
+        0% {
+            -o-transform: rotate(0deg);
+        }
+        100% {
+            -o-transform: rotate(359deg);
+        }
+    }
+    @keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+        }
+    }
+</style>
+<!-- Refresh of the running processes -->
+<script th:if="${nextRefresh}>=0" th:text="'setTimeout(jobs, ' + ${nextRefresh} + ')'"></script>
+<!-- Refresh of the running processes -->
+<script>
+// <![CDATA[
+    function refreshTimers(id, time){
+        time = time-60000;
+        setInterval(refreshTimers, 60000, id, time);
+        var minutes = Math.floor((time/1000/60)%60);
+        var hours = Math.floor((time/1000/60/60)%24);
+        var days = Math.floor(time/1000/60/60/24);
+        $("#"+id).html(days + "j" + hours + ":" + minutes);
+    }
+    function test(){
+        alert("test");
+    }
+// ]]>
+</script>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ProcessTitle</th>
+            <th>Status</th>
+            <th>Estimated Completion</th>
+            <th>Time before deletion</th>
+            <th>Download</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="table" th:each="job : ${jobList}">
+            <td><p th:text="${job.processTitle}"/></td>
+            <td>
+                <p th:if="${job.status.equalsIgnoreCase('ACCEPTED')}" class="label label-primary" th:text="${job.status}"/>
+                <p th:if="${job.status.equalsIgnoreCase('RUNNING')}" class="label label-info" th:text="${job.status}"/>
+                <p th:if="${job.status.equalsIgnoreCase('FAILED')}" class="label label-danger" th:text="${job.status}"/>
+                <p th:if="${job.status.equalsIgnoreCase('SUCCEEDED')}" class="label label-success" th:text="${job.status}"/>
+            </td>
+            <td>
+                <div class="progress">
+
+                    <div th:if="${job.status.equalsIgnoreCase('ACCEPTED')}" class="progress-bar progress-bar-default" role="progressbar" aria-valuemin="0" aria-valuenow="10"
+                         aria-valuemax="100" style="width: 100%;">
+                    </div>
+                    <div th:if="${job.status.equalsIgnoreCase('RUNNING')}" class="progress-bar progress-bar-info" role="progressbar" aria-valuemin="0" aria-valuenow="10"
+                         aria-valuemax="100" th:style="'width: ' + ${job.percentCompleted} + '%;'">
+                        <span th:text="${job.percentCompleted} + '%'"></span>
+                    </div>
+                    <div th:if="${job.status.equalsIgnoreCase('FAILED')}" class="progress-bar  progress-bar-danger" role="progressbar" aria-valuemin="0" aria-valuenow="10"
+                         aria-valuemax="100" style="width: 100%;">
+                    </div>
+                    <div th:if="${job.status.equalsIgnoreCase('SUCCEEDED')}" class="progress-bar  progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuenow="100"
+                         aria-valuemax="100" style="width: 100%;">
+                        <span>100%</span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div th:if="${job.hasResult()}">
+                    <p th:id="${job.jobId}+'time'" th:text="${job.result.getRemainTime()}">time</p>
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                            jQuery().ready(function(){
+                                setTimeout(refreshTimers, 60000, [[${job.jobId}]]+"time", [[${job.result.getRemainTimeMillis()}]]);
+                            });
+                        /*]]>*/
+                    </script>
+                </div>
+                <p th:if="!${job.hasResult()}">
+                    no time
+                </p>
+            </td>
+            <td>
+                <div th:if="${job.hasResult()}">
+                    <form action="/createArchive" method="get" th:id="${job.jobId}">
+                        <input type="hidden" name="jobId" th:value="${job.jobId}" />
+
+                        <input id="createArchiveBtn" class="btn btn-primary" type="submit" value="Download">
+                        </input>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

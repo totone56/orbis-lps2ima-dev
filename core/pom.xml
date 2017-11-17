@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- - - - - - - - - - - -
+    -   Project Information  -
+    - - - - - - - - - - - - -->
+    <name>core</name>
+    <description>
+        The core module is the entry point of the application which include the Wisdom-Framework.
+        The core module is part of the OrbisServer platform
+    </description>
+
+    <!-- - - - - - -
+    -  The basics  -
+    - - - - - - - -->
+    <groupId>org.orbisgis.orbisserver</groupId>
+    <artifactId>core</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>wisdom</packaging>
+    <parent>
+        <groupId>org.orbisgis</groupId>
+        <artifactId>orbisserver</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <!-- - - - - - - -
+    -  Dependencies  -
+    - - - - - - - - -->
+    <dependencies>
+        <dependency>
+            <groupId>org.wisdom-framework</groupId>
+            <artifactId>wisdom-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.wisdom-framework</groupId>
+            <artifactId>wisdom-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.orbisgis.orbisserver</groupId>
+            <artifactId>baseserver</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <!-- - - - - - - - -
+    -  Build Settings  -
+    - - - - - - - - - -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.wisdom-framework</groupId>
+                <artifactId>wisdom-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.googlecode.gettext-commons</groupId>
+                <artifactId>gettext-maven-plugin</artifactId>
+                <configuration>
+                    <poDirectory>src/main/resources/org/orbisgis/orbisserver/core/translation/</poDirectory>
+                    <targetBundle>org.orbisgis.orbisserver.core.Messages</targetBundle>
+                    <keywords>-ktr -kmarktr</keywords>
+                    <outputFormat>properties</outputFormat>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,22 @@
+<table class="table table-bordered table-condensed table-responsive">
+    <thead>
+        <tr class="active">
+            <td>
+                <p>Table Name</p>
+            </td>
+            <td th:colspan="${cell_width_percent - 1}">
+                <p>Fields</p>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="table : ${databaseContent.tableList}">
+            <td>
+                <p class="table-row-title" th:text="${table.name}"></p>
+            </td>
+            <td th:each="field : ${table.fieldList}">
+                <span th:text="${field.name}"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>

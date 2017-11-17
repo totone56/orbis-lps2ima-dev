@@ -1,0 +1,339 @@
+/*
+ * OrbisServer is an OSGI web application to expose OGC services.
+ *
+ * OrbisServer is part of the OrbisGIS platform
+ *
+ * OrbisGIS is a java GIS application dedicated to research in GIScience.
+ * OrbisGIS is developed by the GIS group of the DECIDE team of the
+ * Lab-STICC CNRS laboratory, see <http://www.lab-sticc.fr/>.
+ *
+ * The GIS group of the DECIDE team is located at :
+ *
+ * Laboratoire Lab-STICC – CNRS UMR 6285
+ * Equipe DECIDE
+ * UNIVERSITÉ DE BRETAGNE-SUD
+ * Institut Universitaire de Technologie de Vannes
+ * 8, Rue Montaigne - BP 561 56017 Vannes Cedex
+ *
+ * OrbisServer is distributed under LGPL 3 license.
+ *
+ * Copyright (C) 2017 CNRS (Lab-STICC UMR CNRS 6285)
+ *
+ *
+ * OrbisServer is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * OrbisServer is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * OrbisServer. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * For more information, please consult: <http://www.orbisgis.org/>
+ * or contact directly:
+ * info_at_ orbisgis.org
+ */
+
+html,body{height:100%;}
+
+body .row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+body .container-fluid {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+body > div:not(#navbar) {
+    height :100%;
+}
+
+body .container-fluid {
+    height :100%;
+}
+
+#user_icon {
+    margin-right: 15px;
+}
+
+#log_in{
+    margin-right: 15px;
+}
+
+#main-body {
+    padding-top: 50px;
+    height :100%;
+}
+
+#main-body > .row {
+    height :100%;
+}
+.is-menu {
+    margin-left: 300px;
+}
+
+#content{
+    height :100%;
+    padding: 0px;
+}
+
+#section-head {
+    display: block;
+    background: url(http://orbisgis.org/assets/img/header_bg.jpg) center no-repeat;
+    background-size:cover;
+    text-align: center;
+}
+
+#section-head img {
+    margin-top: 0px;
+    margin-left: 145px;
+}
+
+#section-head .logo{
+    top: 60px;
+    left: -157px;
+    font-size: 130px;
+}
+
+#section-head h1 {
+    margin-top: 25px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 40px;
+    letter-spacing: 3px;
+    margin-left: 15px;
+    text-shadow: 1px 1px 1px #000;
+}
+
+#section-head p {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 40px;
+    margin-left: 15px;
+    text-shadow: 1px 1px 1px #000;
+    margin-top: -5px;
+    padding-bottom: 10px;
+    margin-bottom: 0px;
+    font-style: italic;
+}
+
+#subtext {
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    font-weight: 300;
+}
+
+#subtext .head-icon {
+    color: #555;
+    margin-top: 50px;
+    font-size: 60px;
+    line-height: 30px;
+}
+
+#subtext h2 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 30px;
+    font-family: "Raleway";
+    color: #333;
+    line-height: 1.1;
+    -webkit-font-smoothing: antialiased;
+}
+
+#subtext p {
+    letter-spacing: 1px;
+    font-family: "Lato";
+    font-size: 16px;
+    color: #555;
+    -webkit-font-smoothing: antialiased;
+    line-height: 28px;
+}
+
+#content_top {
+    margin-top:1px;
+    padding-bottom:10px;
+    top: 0px;
+    height: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+#row_top {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-bottom: -10px;
+    height: 100%;
+}
+
+#content_bottom {
+    overflow-y: auto;
+    overflow-x: auto;
+    padding-top: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.table {
+    margin-bottom: 0px;
+}
+
+table tbody tr td {
+    margin-top: 5px;
+    font-family: "Lato";
+    font-size: 12px;
+}
+
+table thead tr td p {
+    font-family: "Raleway";
+    font-weight: bold;
+    font-size: 16px;
+}
+
+table tr td:first-child {
+    font-family: "Raleway";
+    font-size: 14px;
+}
+
+.section {
+    font-family: "Lato";
+    font-weight: 300;
+    font-size: 16px;
+    color: #555;
+    -webkit-font-smoothing: antialiased;
+}
+
+.section h1, h2{
+    text-align: center;
+    font-family: "Raleway";
+    font-weight: 300;
+    color: #333;
+}
+
+.section h1{
+    font-size: 36px;
+}
+
+.section h2{
+    font-size: 30px;
+}
+
+.section hr{
+    box-sizing: content-box;
+    margin: 1em 0;
+    padding: 0;
+    display: block;
+    position: relative;
+    border: none;
+    height: 1px;
+}
+
+.section hr:before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 25%;
+    width: 50%;
+    height: 2px;
+    background: #ccc;
+}
+
+.section p {
+    padding-top: 25px;
+    line-height: 28px;
+    margin-bottom: 25px;
+}
+
+#data-header{
+    background: url(http://orbisgis.org/assets/img/bg/divider1.jpg) center no-repeat;
+    background-size:cover;
+    height: 10%;
+    margin-bottom: 20px;
+}
+
+#process-header{
+    background: url(http://orbisgis.org/assets/img/bg/divider4.jpg) center no-repeat;
+    background-size:cover;
+    height: 10%;
+    margin-bottom: 20px;
+}
+
+#sign_in .glyphicon{
+    margin-right: 5px;
+}
+
+#log_in .glyphicon{
+    margin-right: 5px;
+}
+
+.col-xs-6, .col-sm-6, .col-md-6, .col-lg-6 {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#title{
+    text-align: center;
+    font-family: "Raleway";
+    font-weight: 300;
+    font-size: 26px;
+    color: #333;
+}
+
+#description{
+    font-family: "Lato";
+    font-weight: 300;
+    font-size: 20px;
+    color: #555;
+    padding-bottom: 25px;
+}
+
+.elements{
+    font-family: "Lato";
+    font-weight: 300;
+    font-size: 16px;
+    color: #555;
+}
+
+.panel-title{
+    font-family: "Lato";
+    font-weight: bold;
+    font-size: 16px;
+    color: #555;
+}
+
+label{
+    font-weight: inherit;
+}
+
+@media (max-width: 768px) {
+
+    #main-body {
+        margin-left: 200px;
+    }
+
+    .is-menu {
+        margin-left: 200px;
+    }
+
+    #section-head img{
+        margin-left: 0px;
+        margin-top: 0px;
+    }
+
+    #section-head .logo{
+        top: 0px;
+        left: 0px;
+    }
+
+    #section-head h1{
+        margin-top: 0px;
+    }
+}

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- - - - - - - - - - - -
+    -   Project Information  -
+    - - - - - - - - - - - - -->
+    <name>wpsservice</name>
+    <description>
+        Service implementing the baseserver-api and distributing the wps processes as operation.
+        The process loaded comes from the OrbisGIS wps script bundle.
+        The wpsservice module is part of the OrbisServer platform.
+    </description>
+
+    <!-- - - - - - -
+    -  The basics  -
+    - - - - - - - -->
+    <groupId>org.orbisgis.orbisserver</groupId>
+    <artifactId>wpsservice</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>wisdom</packaging>
+    <parent>
+        <groupId>org.orbisgis</groupId>
+        <artifactId>orbisserver</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <!-- - - - - - - -
+    -  Dependencies  -
+    - - - - - - - - -->
+    <dependencies>
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.gettext-commons</groupId>
+            <artifactId>gettext-commons</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.orbiswps</groupId>
+            <artifactId>server</artifactId>
+            <version>5.1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.orbiswps</groupId>
+            <artifactId>scripts</artifactId>
+            <version>5.1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.orbisgis</groupId>
+            <artifactId>jts-core-osgi</artifactId>
+            <version>5.1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.orbisgis</groupId>
+            <artifactId>jts-io-osgi</artifactId>
+            <version>5.1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.orbisgis</groupId>
+            <artifactId>h2gis-functions</artifactId>
+            <version>1.3.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.orbisgis.orbisserver</groupId>
+            <artifactId>baseserver-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+
+    <!-- - - - - - - - -
+    -  Build Settings  -
+    - - - - - - - - - -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.wisdom-framework</groupId>
+                <artifactId>wisdom-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.googlecode.gettext-commons</groupId>
+                <artifactId>gettext-maven-plugin</artifactId>
+                <configuration>
+                    <poDirectory>src/main/resources/org/orbisgis/orbisserver/wpsservice/translation/</poDirectory>
+                    <targetBundle>org.orbisgis.orbisserver.wpsservice.Messages</targetBundle>
+                    <keywords>-ktr -kmarktr</keywords>
+                    <outputFormat>properties</outputFormat>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,373 @@
+<style type="text/css">
+      .list-group-item-process{
+        background:#FFF;
+        font-size: 15px;
+        border-style: solid;
+        border-bottom: none;
+      }
+</style>
+<style type="text/css">
+    .gly-spin {
+        -webkit-animation: spin 2s infinite linear;
+        -moz-animation: spin 2s infinite linear;
+        -o-animation: spin 2s infinite linear;
+        animation: spin 2s infinite linear;
+    }
+    @-moz-keyframes spin {
+        0% {
+            -moz-transform: rotate(0deg);
+        }
+        100% {
+            -moz-transform: rotate(359deg);
+        }
+    }
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(359deg);
+        }
+    }
+    @-o-keyframes spin {
+        0% {
+            -o-transform: rotate(0deg);
+        }
+        100% {
+            -o-transform: rotate(359deg);
+        }
+    }
+    @keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+        }
+    }
+    .rotate{
+        -moz-transition: all 0.3s linear;
+        -webkit-transition: all 0.3s linear;
+        -o-animation: all 0.3s linear;
+        transition: all 0.3s linear;
+    }
+
+    .rotate.down{
+        -moz-transform:rotate(180deg);
+        -webkit-transform:rotate(180deg);
+        -o-animation: rotate(180deg);
+        transform:rotate(180deg);
+    }
+    .tilte{
+        padding-top:50px;
+    }
+    .description{
+        padding-top:20px;
+        padding-bottom:20px;
+    }
+    .hidden{
+        border-bottom: solid 2px;
+        border-color : #999;
+        margin-bottom : 20px
+    }
+    #submitBtn{
+        margin-top:20px;
+    }
+    #checkBoxs{
+        padding-top:20px;
+        padding-bottom:20px;
+    }
+    #checkBoxs-optional{
+        padding-top:20px;
+        padding-bottom:20px;
+    }
+
+</style>
+<div class="col-xs-12 col-sm-10 col-sm-push-1 col-md-10 col-md-push-1">
+
+    <form id="upload-form" action="/uploading" enctype="multipart/form-data" method="POST"></form>
+
+    <h1 id="title" th:text="${operation.title}" ></h1>
+    <hr />
+    <div id="description"><p th:text="${operation.abstr}"></p></div>
+
+    <form action="/execute" method="post" id="form">
+        <div id="hidden">
+            <input type="hidden" name="processId" th:value="${operation.id}" />
+        </div>
+
+        <div class="NoOptional" th:each="input : ${operation.inputList}" th:if="${!(input.optional)}">
+            <!--RawData-->
+            <div class="elements" th:if="${input.name.equalsIgnoreCase('RawData') and !(input.optional)}">
+                <span th:text="${input.title}">title</span>
+                <div class="elements form-group rawdata">
+
+                     <div class="row">
+                        <div th:id="${input.htmlId}" class="col-xs-12 col-sm-10 col-md-8 col-lg-6 elements input-group">
+                            <label class="input-group-btn control-label" onchange="javascript:nameFile()">
+                                <span class="btn btn-default">
+                                    Browse
+                                    <input id="file" th:name="file" type="file" style="display: none;" multiple="true"
+                                           th:onchange="'javascript:loadFile(\''+${input.htmlId}+'\')'"
+                                           class="form-control" form="upload-form"/>
+                                </span>
+                            </label>
+                            <input id="in-browse" type="text" th:name="${input.id}" class="form-control" readonly="true"
+                                   placeholder="Select a file"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class=" elements form-group geometrydata"
+                 th:if="${input.name.equalsIgnoreCase('GeometryData') and !(input.optional)}">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <span th:text="${input.title}">title</span>
+                        <input class="form-control" type="text" th:name="${input.id}" value="Table title" />
+                    </div>
+                </div>
+            </div>
+
+            <!--Password-->
+            <div class=" elements form-group password"
+                 th:if="${input.name.equalsIgnoreCase('Password') and !(input.optional)}">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <span th:text="${input.title}">title</span>
+                        <input class="form-control" type="password" th:name="${input.id}" value="Password" />
+                    </div>
+                </div>
+            </div>
+
+            <!--LiteralDataType:String-->
+            <div class=" elements form-group string"
+                 th:if="${input.name.equalsIgnoreCase('LiteralDataType') and input.type.equalsIgnoreCase('String')
+                  and !(input.optional)}">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <span th:text="${input.title}">title</span>
+                        <input type="text" class="form-control" th:name="${input.id}" value="String value" />
+                    </div>
+                </div>
+            </div>
+
+            <!--LiteralDataType:Number-->
+            <div id="number" class=" elements form-group "
+                 th:if="${input.name.equalsIgnoreCase('LiteralDataType') and input.type.equalsIgnoreCase('Number')
+                  and !(input.optional)}">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <span th:text="${input.title}">title</span>
+                        <input type="number" class="form-control" th:step="${input.attributes.get('spacing')}"
+                               th:name="${input.id}" th:min="${input.attributes.get('min')}"
+                               th:max="${input.attributes.get('max')}" th:value="${input.attributes.get('value')}" />
+                    </div>
+                </div>
+            </div>
+
+            <!--JDBCTable-->
+            <div class=" elements form-group "
+                 th:if="${input.name.equalsIgnoreCase('JDBCTable') and !(input.optional)}">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <span th:text="${input.title}">title</span>
+                        <input class="form-control" type="text" th:name="${input.id}" value="Table title" />
+                    </div>
+                </div>
+            </div>
+
+            <!--JDBCColumn-->
+            <div class=" elements form-group jdbccolumn"
+                 th:if="${input.name.equalsIgnoreCase('JDBCColumn') and !(input.optional)}">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <span th:text="${input.title}">title</span>
+                        <input class="form-control" type="text" th:name="${input.id}" value="Table column"/>
+                    </div>
+                </div>
+            </div>
+
+            <!--JDBCValue-->
+            <div class=" elements form-group jdbcvalue"
+                 th:if="${input.name.equalsIgnoreCase('JDBCValue') and !(input.optional)}">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <span th:text="${input.title}">title</span>
+                        <input class="form-control" type="text" th:name="${input.id}" value="Table value" />
+                    </div>
+                </div>
+            </div>
+
+            <!--Enumertion-->
+            <div class=" form-group elements enumeration"
+                 th:if="${input.name.equalsIgnoreCase('Enumeration')  and !(input.optional)}">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <span th:text="${input.title}">title</span>
+                        <br th:if="${input.attributes.get('multiSelection')}" />
+                        <select class="selectpicker form-control" th:multiple="${input.attributes.get('multiSelection')}" th:name="${input.id}">
+                            <option th:each="value : ${input.attributes.get('nameList')}" th:value="${value}" th:text="${value}">
+                                none
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!--/Enumertion-->
+        </div>
+
+        <!--CheckBoxs-->
+        <div class="elements" id="checkBoxs">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-check form-check-inline" th:each="input : ${operation.inputList}"
+                     th:if="${input.name.equalsIgnoreCase('LiteralDataType') and input.type.equalsIgnoreCase('Boolean')
+                     and !(input.optional)}">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" th:name="${input.id}" id="inlineCheckbox1" th:text="${input.title}"/>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="optional" hidden="true">
+            <div id="inputsCollapse" class="panel-heading">
+                <h4 class="panel-title">
+                    <a id="a_Optional" href="#collapse" data-toggle="collapse" data-parent="#optional">
+                        Optional Settings  <span id="icon-chevron" class="glyphicon glyphicon-chevron-down rotate"></span></a>
+                </h4>
+            </div>
+
+            <div id="collapse" class="panel-collapse collapse">
+                <div id="ListElements" class="panel-body">
+                    <div class="optionalElements" th:each="input : ${operation.inputList}" th:if="${input.optional}">
+
+                        <div class="elements form-group rawdata" th:if="${input.name.equalsIgnoreCase('RawData')
+                              and (input.optional)}">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <span th:text="${input.title}">title</span>
+                                    <input class="form-control" type="text" th:name="${input.id}" placeholder="Table title" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class=" elements form-group geometrydata"
+                             th:if="${input.name.equalsIgnoreCase('GeometryData') and (input.optional)}">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <span th:text="${input.title}">title</span>
+                                    <input class="form-control" type="text" th:name="${input.id}" placeholder="Table title" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" elements form-group password"
+                             th:if="${input.name.equalsIgnoreCase('Password') and (input.optional)}">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <span th:text="${input.title}">title</span>
+                                    <input class="form-control" type="password" th:name="${input.id}" placeholder="Password" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" elements form-group string"
+                             th:if="${input.name.equalsIgnoreCase('LiteralDataType') and input.type.equalsIgnoreCase('String')
+                              and (input.optional)}">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <span th:text="${input.title}">title</span>
+                                    <input type="text" class="form-control" th:name="${input.id}" placeholder="String value" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" elements form-group number "
+                             th:if="${input.name.equalsIgnoreCase('LiteralDataType') and input.type.equalsIgnoreCase('Number')
+                              and (input.optional)}">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <span th:text="${input.title}">title</span>
+                                    <input type="number" class="form-control" th:step="${input.attributes.get('spacing')}" th:name="${input.id}"
+                                           th:min="${input.attributes.get('min')}" th:max="${input.attributes.get('max')}"
+                                           th:value="${input.attributes.get('value')}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" elements form-group jdbctable"
+                             th:if="${input.name.equalsIgnoreCase('JDBCTable') and (input.optional)}">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <span th:text="${input.title}">title</span>
+                                    <input class="form-control" type="text" th:name="${input.id}" placeholder="Table title" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" elements form-group jdbccolumn"
+                             th:if="${input.name.equalsIgnoreCase('JDBCColumn') and (input.optional)}">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <span th:text="${input.title}">title</span>
+                                    <input class="form-control" type="text" th:name="${input.id}" placeholder="Table column"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" elements form-group jdbcvalue"
+                             th:if="${input.name.equalsIgnoreCase('JDBCValue') and (input.optional)}">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <span th:text="${input.title}">title</span>
+                                    <input class="form-control" type="text" th:name="${input.id}" placeholder="Table value" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" form-group elements enumeration"
+                             th:if="${input.name.equalsIgnoreCase('Enumeration') and (input.optional)}">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <span th:text="${input.title}">title</span>
+                                    <br th:if="${input.attributes.get('multiSelection')}" />
+                                    <select class="selectpicker form-control" th:multiple="${input.attributes.get('multiSelection')}" th:name="${input.id}">
+                                        <option th:each="value : ${input.attributes.get('valueList')}" th:value="${value}" th:text="${value}">
+                                            none
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="elements">
+                    <div id="checkBoxs_optional"  class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-check form-check-inline"
+                             th:each="input : ${listInputOptional}"
+                             th:if="${input.name.equalsIgnoreCase('LiteralDataType') and
+                                 input.type.equalsIgnoreCase('Boolean') and input.optional}">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" th:name="${input.id}" id="inlineCheckbox1" th:text="${input.title}"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input id="submitBtn" class="btn btn-primary" type="submit" value="Submit">
+            <span id="submitText" hidden="true"> Sending data
+                <i class="glyphicon glyphicon-refresh gly-spin"></i>
+            </span>
+        </input>
+    </form>
+    <script src="/assets/js/describe_script.js"></script>
+</div>

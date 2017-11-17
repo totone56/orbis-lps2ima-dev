@@ -1,0 +1,299 @@
+/*
+ * OrbisServer is an OSGI web application to expose OGC services.
+ *
+ * OrbisServer is part of the OrbisGIS platform
+ *
+ * OrbisGIS is a java GIS application dedicated to research in GIScience.
+ * OrbisGIS is developed by the GIS group of the DECIDE team of the
+ * Lab-STICC CNRS laboratory, see <http://www.lab-sticc.fr/>.
+ *
+ * The GIS group of the DECIDE team is located at :
+ *
+ * Laboratoire Lab-STICC – CNRS UMR 6285
+ * Equipe DECIDE
+ * UNIVERSITÉ DE BRETAGNE-SUD
+ * Institut Universitaire de Technologie de Vannes
+ * 8, Rue Montaigne - BP 561 56017 Vannes Cedex
+ *
+ * OrbisServer is distributed under LGPL 3 license.
+ *
+ * Copyright (C) 2017 CNRS (Lab-STICC UMR CNRS 6285)
+ *
+ *
+ * OrbisServer is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * OrbisServer is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * OrbisServer. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * For more information, please consult: <http://www.orbisgis.org/>
+ * or contact directly:
+ * info_at_ orbisgis.org
+ */
+
+#navbar {
+    width: 100%;
+    z-index:10;
+    box-shadow: 0px 2px 2px grey;
+}
+
+#left-nav {
+    margin-top: 50px;
+    position: fixed;
+    height: 100%;
+    width: 300px;
+    border-right: 1px solid #e7e7e7;
+    background-color: #f8f8f8;
+    -moz-animation: slideout 300ms forwards;
+    -o-animation: slideout 300ms forwards;
+    -webkit-animation: slideout 300ms forwards;
+    animation: slideout 300ms forwards;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+#left-nav .navbar {
+    border: none;
+}
+
+#left-nav .navbar-nav {
+    width: 100%;
+}
+
+#left-nav .navbar-nav li {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #e7e7e7;
+    margin-bottom: 0;
+    background-color: transparent;
+    border-radius: 0px;
+    box-shadow: none;
+}
+#left-nav .navbar-nav .dropdown-lvl1 {
+    border-bottom: 0px;
+}
+#left-nav .navbar-nav .dropdown-lvl1 li {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+#left-nav .navbar-nav .dropdown-lvl1 li:last-child {
+    border-bottom: 0px;
+}
+
+#left-nav .navbar-nav li a .glyphicon {
+    padding-right: 10px;
+}
+
+/** Dropdown */
+#left-nav .dropdown {
+    border: none;
+    margin-bottom: 0;
+    background-color: transparent;
+}
+
+#left-nav .dropdown .caret {
+    float: right;
+    margin: 9px 5px 0;
+}
+
+#left-nav .dropdown > a {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+#left-nav .dropdown li:last-child > a {
+    border-bottom: 0px;
+}
+
+#left-nav-content{
+    margin: 0px;
+}
+
+.navbar-nav-lvl2{
+    margin: 0px;
+}
+
+#left-nav .dropdown .panel-body {
+    padding: 0;
+}
+
+#left-nav .dropdown .dropdown-lvl1 .panel-body .navbar-nav li {
+    padding-left: 15px;
+}
+
+/** Search element */
+#left-nav #search .panel-body {
+    padding: 0;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+#left-nav #search .panel-body .navbar-form {
+    padding: 0;
+    padding-right: 50px;
+    margin: 0;
+    width: 100%;
+    position: relative;
+}
+
+#left-nav #search .panel-body .navbar-form input {
+    width: 100%;
+    height: 50px;
+    border: 0;
+    border-radius: 0;
+}
+
+#left-nav #search .panel-body .navbar-form .form-group {
+    width: 100%;
+}
+
+#left-nav #search .panel-body .navbar-form .form-control {
+    box-shadow: none;
+}
+
+#left-nav #search .panel-body .navbar-form .btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: #f3f3f3;
+    padding: 15px 18px;
+}
+
+#left-nav.slide-in {
+    -moz-animation: slidein 300ms forwards;
+    -o-animation: slidein 300ms forwards;
+    -webkit-animation: slidein 300ms forwards;
+    animation: slidein 300ms forwards;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+/** dopdown user*/
+#span-user {
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+}
+
+#navbar .navbar-inverse {
+    background-color: #101010;
+}
+
+#navbar .navbar-inverse .navbar-nav > li > a {
+    color: #999;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+#navbar .navbar-inverse .navbar-nav > li > a:hover {
+    color: #fff;
+}
+#navbar .navbar-inverse .navbar-nav > li > a.active {
+    color: #fff;
+    background-color: #428bca;
+}
+
+#navbar .navbar-inverse .navbar-brand {
+    color: #eee;
+}
+
+#left-nav #left-nav-content > li {
+    border-bottom: 0px;
+}
+
+@media (max-width: 768px) {
+
+    #left-nav .dropdown .navbar-nav-lvl2 li:last-child {
+        border-bottom: 0px;
+    }
+
+
+    #left-nav #left-nav .navbar-nav .dropdown-lvl1 li:last-child {
+        border-bottom: 1px solid #e7e7e7;
+    }
+
+    #left-nav {
+        width: 200px;
+    }
+
+    #main-navbar{
+        visibility: hidden;
+        height: 0px;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    #user_ul{
+        float: right;
+        margin-top:5px;
+        margin-bottom:0px;
+    }
+
+    #user_ul li{
+        float: left;
+    }
+
+    #home-button{
+        height: 0px;
+        margin-left: 0px;
+    }
+
+    #left-nav-content{
+        margin-left: 0px;
+    }
+
+    .navbar-nav-lvl2{
+        padding-left: 15px;
+        margin-left: 0px;
+    }
+
+    #left-nav {
+        -moz-animation: slidein 300ms forwards;
+        -o-animation: slidein 300ms forwards;
+        -webkit-animation: slidein 300ms forwards;
+        animation: slidein 300ms forwards;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+    }
+
+    #section-head img{
+        margin-top: 20px;
+    }
+
+    #section-head .logo{
+        display: block;
+        margin-top: -155px;
+        margin-bottom: 35px;
+    }
+
+    .dropdown-lvl1 ul {
+        margin-left: 0px;
+    }
+
+    #left-nav #left-nav-content > li {
+        border-bottom: 1px solid #e7e7e7;
+    }
+}
+
+
+@media (min-width: 768px) {
+
+    #left-nav .dropdown .dropdown-lvl1 {
+        border-bottom: 1px solid #e7e7e7;
+    }
+
+    #left-nav .dropdown > .dropdown-button-lvl1{
+        padding: 0px;
+        height: 0px;
+        visibility: hidden;
+    }
+    #left-nav .dropdown .dropdown-lvl1{
+        padding: 0px;
+    }
+}

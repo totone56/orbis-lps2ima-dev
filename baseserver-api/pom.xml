@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- - - - - - - - - - - -
+    -   Project Information  -
+    - - - - - - - - - - - - -->
+    <name>baseserver-api</name>
+    <description>
+        The baseserver-api module contains all the interfaces and abstract classes for the creation of a basic web
+        server working on the core module. The created server will be able to manage all the services
+        based on this api.
+        The baseserver-api module is part of the OrbisServer platform
+    </description>
+
+    <!-- - - - - - -
+    -  The basics  -
+    - - - - - - - -->
+    <groupId>org.orbisgis.orbisserver</groupId>
+    <artifactId>baseserver-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>bundle</packaging>
+    <parent>
+        <groupId>org.orbisgis</groupId>
+        <artifactId>orbisserver</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <!-- - - - - - - - -
+    -  Build Settings  -
+    - - - - - - - - - -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>${maven-bundle-plugin-version}</version>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

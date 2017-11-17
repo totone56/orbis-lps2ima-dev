@@ -1,0 +1,4 @@
+
+<li th:each="operation : ${processList}">
+    <a th:text="${operation.title}" th:onclick="'javascript:showProcess(\'' + ${operation.id} + '\');'"></a>
+</li>

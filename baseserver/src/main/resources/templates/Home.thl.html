@@ -1,0 +1,230 @@
+<!--
+- OrbisServer is an OSGI web application to expose OGC services.
+-
+- OrbisServer Is a part of the OrbisGIS platform.
+-
+- OrbisGIS is a java GIS application dedicated to research in GIScience.
+- OrbisGIS is developed by the GIS group of the DECIDE team of the
+- Lab-STICC CNRS laboratory, see <http://www.lab-sticc.fr/>.
+-
+- The GIS group of the DECIDE team is located at :
+-
+- Laboratoire Lab-STICC – CNRS UMR 6285
+- Equipe DECIDE
+- UNIVERSITÉ DE BRETAGNE-SUD
+- Institut Universitaire de Technologie de Vannes
+- 8, Rue Montaigne - BP 561 56017 Vannes Cedex
+-
+- OrbisServer is distributed under LGPL 3 license.
+-
+- Copyright (C) 2015-2017 CNRS (Lab-STICC UMR CNRS 6285)
+-
+-
+- OrbisServer is free software: you can redistribute it and/or modify it under the
+- terms of the GNU Lesser General Public License as published by the Free Software
+- Foundation, either version 3 of the License, or (at your option) any later
+- version.
+-
+- OrbisServer is distributed in the hope that it will be useful, but WITHOUT ANY
+- WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+- A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+-
+- You should have received a copy of the GNU Lesser General Public License along with
+- OrbisServer. If not, see <http://www.gnu.org/licenses/>.
+-
+- For more information, please consult: <http://www.orbisgis.org/>
+- or contact directly:
+- info_at_ orbisgis.org
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>OrbisServer</title>
+
+        <link rel="stylesheet" href="/libs/css/bootstrap.css" media="screen"/>
+        <link rel="stylesheet" href="/assets/css/mainbody.css"/>
+        <link rel="stylesheet" href="/assets/css/login_modal.css"/>
+        <link rel="stylesheet" href="/assets/css/spinning_anim.css"/>
+        <link rel="stylesheet" href="/assets/css/coloring_anim.css"/>
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:400,300,700" type="text/css" />
+        <link rel="stylesheet" href="/assets/css/navbar.css"/>
+
+        <script src="/libs/jquery.min.js"></script>
+        <script src="/libs/js/bootstrap.min.js"></script>
+        <script src="/assets/js/main_script.js"></script>
+
+    </head>
+    <body>
+        <style>
+            @-moz-keyframes slidein {
+                0% {
+                    left: -300px;
+                }
+                100% {
+                    left: 0px;
+                }
+            }
+            @-webkit-keyframes slidein {
+                0% {
+                    left: -300px;
+                }
+                100% {
+                    left: 0px;
+                }
+            }
+            @keyframes slidein {
+                0% {
+                    left: -300px;
+                }
+                100% {
+                    left: 0px;
+                }
+            }
+            @-moz-keyframes slideout {
+                0% {
+                    left: 0;
+                }
+                100% {
+                    left: -300px;
+                }
+            }
+            @-webkit-keyframes slideout {
+                0% {
+                    left: 0;
+                }
+                100% {
+                    left: -300px;
+                }
+            }
+            @keyframes slideout {
+                0% {
+                    left: 0;
+                }
+                100% {
+                    left: -300px;
+                }
+            }
+        </style>
+
+        <!-- TODO : Handle and display the error more friendly. -->
+
+        <div id="navbar">
+            <nav class="nav navbar-inverse navbar-static-top">
+                <div class="container-fluid ">
+                    <div id="home-button" class="navbar-header">
+                        <a class="navbar-brand" href="#" onclick="javascript:home();">
+                            <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <ul id="main-navbar" class="nav navbar-nav">
+                        <li>
+                            <a id="Data" onclick="javascript:data();$( '#dropdown-data' ).addClass('in');" class="navbar-brand" href="#">Data</a>
+                        </li>
+                        <li>
+                            <a id="Process" onclick="javascript:process();$( '#dropdown-process' ).addClass('in');" class="navbar-brand" href="#">Process</a>
+                        </li>
+                        <li>
+                            <a id="Share" onclick="javascript:share();" class="navbar-brand" href="#">Share</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right" id="user_ul">
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div>
+            <div id="left-nav">
+                <nav class="navbar navbar-default" role="navigation">
+                    <!-- Main Menu -->
+                    <div class="left-nav-container">
+                        <ul class="nav navbar-nav" id="left-nav-content">
+                            <li class="panel panel-default dropdown">
+                                <a class="dropdown-button-lvl1" data-toggle="collapse" href="#dropdown-data" onclick="javascript:data();">
+                                    <span class="glyphicon glyphicon-list-alt"></span> Data
+                                </a>
+
+                                <div id="dropdown-data" class="panel-collapse collapse">
+                                    <div class="panel-body" id="data-content">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="panel panel-default dropdown">
+                                <a class="dropdown-button-lvl1" data-toggle="collapse" href="#dropdown-process" onclick="javascript:process()">
+                                    <span class="glyphicon glyphicon-cog"></span> Process
+                                </a>
+
+                                <div id="dropdown-process" class="panel-collapse collapse">
+                                    <div class="panel-body" id="process-content">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Main Content -->
+            <div class="container-fluid">
+                <div id="main-body">
+                    <div class="row row-offcanvas row-offcanvas-right">
+                        <div id="content" class="col-xs-12 col-sm-12 col-md-12">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="loginModal" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" align="center">
+                            <img class="img" id="img_logo"
+                                 src="http://store.orbisgis.org/documentation/online/2-1/fr/files/img_1.png"
+                                 width="350" height="100"/>
+                        </div>
+                        <div id="div-forms">
+                            <!-- Begin # Login Form -->
+                            <form id="login-form" action="/login" method="post">
+                                <div id="login-modal-body" class="modal-body form-group">
+                                    <label id="text-login-msg" class="control-label">
+                                        Type your username and password
+                                    </label>
+                                    <input id="login_username" name="username" class="form-control" type="text"
+                                           placeholder="Username" required="true"/>
+                                    <input id="login_password" name="password" class="form-control" type="password"
+                                           placeholder="Password" required="true"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <div>
+                                        <button id="login_btn" type="submit" class="btn btn-primary btn-lg btn-block">
+                                            Login<i id="login-refresh" class="glyphicon"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <span id="login-footer-text"></span>
+                                        <button id="login_lost_btn" type="button" class="btn btn-link"
+                                                onclick="javascript:pwdLost()">
+                                            Lost Password?
+                                        </button>
+                                        <button id="login_register_btn" type="button" class="btn btn-link"
+                                                onclick="javascript:register()">
+                                            Register
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/assets/js/main_script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,155 @@
+<!--
+- OrbisServer is an OSGI web application to expose OGC services.
+-
+- OrbisServer Is a part of the OrbisGIS platform.
+-
+- OrbisGIS is a java GIS application dedicated to research in GIScience.
+- OrbisGIS is developed by the GIS group of the DECIDE team of the
+- Lab-STICC CNRS laboratory, see <http://www.lab-sticc.fr/>.
+-
+- The GIS group of the DECIDE team is located at :
+-
+- Laboratoire Lab-STICC – CNRS UMR 6285
+- Equipe DECIDE
+- UNIVERSITÉ DE BRETAGNE-SUD
+- Institut Universitaire de Technologie de Vannes
+- 8, Rue Montaigne - BP 561 56017 Vannes Cedex
+-
+- OrbisServer is distributed under LGPL 3 license.
+-
+- Copyright (C) 2015-2017 CNRS (Lab-STICC UMR CNRS 6285)
+-
+-
+- OrbisServer is free software: you can redistribute it and/or modify it under the
+- terms of the GNU Lesser General Public License as published by the Free Software
+- Foundation, either version 3 of the License, or (at your option) any later
+- version.
+-
+- OrbisServer is distributed in the hope that it will be useful, but WITHOUT ANY
+- WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+- A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+-
+- You should have received a copy of the GNU Lesser General Public License along with
+- OrbisServer. If not, see <http://www.gnu.org/licenses/>.
+-
+- For more information, please consult: <http://www.orbisgis.org/>
+- or contact directly:
+- info_at_ orbisgis.org
+-->
+
+<div class="col-md-1"></div>
+<div class="col-md-1"></div>
+<div class="panel panel-default col-md-8" id="user-settings-panel">
+    <div class="col-md-8">
+        <ul class="element_list">
+            <li>
+                <h1>Settings</h1>
+            </li>
+            <li>
+                <ul>
+                    <li>
+                        <form id="pwd_change_form" action="/user/changePwd" method="post">
+                            <h3>Password</h3>
+                            <p>Change your password</p>
+                            <input id="pwd" name="pwd" class="form-control" type="password" placeholder="Password"
+                                   required="true"/>
+                            <input id="pwd_repeat" name="pwd_repeat" class="form-control" type="password"
+                                   placeholder="Repeat Password" required="true"/>
+
+                            <button id="change_pwd_btn" type="submit" class="btn btn-primary">
+                                Change password
+                            </button>
+                            <p id="pwd_change_text"></p>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <h2 th:text="${session.username}"></h2>
+        <img id="settings_user_icon" src="http://orbisgis.org/assets/img/orbisgis.png"/>
+        <button id="upload-image" type="submit" class="btn bnt-block btn-primary">
+            Upload image
+        </button>
+    </div>
+</div>
+<div class="col-md-1"></div>
+<div class="col-md-1"></div>
+
+<style>
+#upload-image{
+    width: 100%;
+}
+
+#settings_user_icon{
+    text-align: center;
+    border: 1px solid #e7e7e7;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+#user-settings-panel{
+    margin-top:10px;
+    padding: 10px;
+}
+
+.element_list {
+    list-style-type: none;
+    list-style-position:inside;
+    margin:0;
+    padding:0;
+    width: 100%;
+}
+
+.element_list input {
+    margin-bottom: 5px;
+    border-radius: 0;
+}
+
+.element_list button {
+    margin-top: 10px;
+}
+
+.element_list ul {
+    list-style-type: none;
+    list-style-position:inside;
+    margin:0;
+    padding:0;
+    width: 100%;
+}
+
+.element_list li {
+    margin-top: 10px
+    width: 100%;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.element_list li:last-child {
+    border-bottom: none;
+}
+</style>
+
+<script>
+    $(function() {
+        $("#pwd_change_form").on("submit", function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: $('#pwd_change_form')[0].action,
+                type: 'POST',
+                data: {
+                    "pwd": $("#pwd").val(),
+                    "pwd_repeat": $("#pwd_repeat").val(),
+                     "token": readCookie("token")
+                },
+                success: function(data) {
+                    $('#pwd_change_text').html(data);
+                },
+                error: function(data) {
+                    $('#pwd_change_text').html(data.responseText);
+                }
+            });
+        });
+    });
+</script>
