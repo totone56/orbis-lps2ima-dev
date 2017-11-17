@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- - - - - - - - - - - -
+    -   Project Information  -
+    - - - - - - - - - - - - -->
+    <name>baseserver</name>
+    <description>
+        Basic server based on the baseserver-api. It contains the main route, the administration system and
+        the service managing. The server offer the different operations from the services in a website dived in three
+        part : Data, Process and Share.
+        The Data part is use to manage the available data in the user workspace.
+        The Process part which contains the operations to process the data.
+        The Share part contains the operations to open data like cartographic representation.
+        The baseserver module is part of the OrbisServer platform.
+    </description>
+
+    <!-- - - - - - -
+    -  The basics  -
+    - - - - - - - -->
+    <groupId>org.orbisgis.orbisserver</groupId>
+    <artifactId>baseserver</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>wisdom</packaging>
+    <parent>
+        <groupId>org.orbisgis</groupId>
+        <artifactId>orbisserver</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <!-- - - - - - - -
+    -  Dependencies  -
+    - - - - - - - - -->
+    <dependencies>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.gettext-commons</groupId>
+            <artifactId>gettext-commons</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+        </dependency>
+
+        <!-- orbiswps dependencies -->
+
+        <dependency>
+            <groupId>org.wisdom-framework</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.193_1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wisdom-framework</groupId>
+            <artifactId>wisdom-jdbc-datasources</artifactId>
+            <version>0.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.wisdom-framework</groupId>
+            <artifactId>wisdom-vertx-engine</artifactId>
+            <version>0.10.0</version>
+        </dependency>
+
+        <!-- orbisserver dependencies -->
+
+        <dependency>
+            <groupId>org.orbisgis.orbisserver</groupId>
+            <artifactId>baseserver-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.orbisgis.orbisserver</groupId>
+            <artifactId>wpsservice</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <!-- - - - - - - - -
+    -  Build Settings  -
+    - - - - - - - - - -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.wisdom-framework</groupId>
+                <artifactId>wisdom-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.googlecode.gettext-commons</groupId>
+                <artifactId>gettext-maven-plugin</artifactId>
+                <configuration>
+                    <poDirectory>src/main/resources/org/orbisgis/orbisserver/translation/</poDirectory>
+                    <targetBundle>org.orbisgis.orbisserver.Messages</targetBundle>
+                    <keywords>-ktr -kmarktr</keywords>
+                    <outputFormat>properties</outputFormat>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
