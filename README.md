@@ -100,5 +100,4 @@ Service implementing the BaseServer API and distributing WPS processes as operat
 provided by the [OrbisWPS](https://github.com/orbisgis/orbiswps) library which includes a WPS 2.0 server, a bundle of basic 
 scripts which are distributed as operations and a groovy api used for the script writing.
 
-More information about the OrbisWPS can be found [here](https://github.com/orbisgis/orbiswps). 
-TEST
+More information about the OrbisWPS can be found [here](https://github.com/orbisgis/orbiswps).
