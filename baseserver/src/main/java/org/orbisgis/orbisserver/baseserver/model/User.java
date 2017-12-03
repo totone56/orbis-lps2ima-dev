@@ -38,10 +38,105 @@
  */
 package org.orbisgis.orbisserver.baseserver.model;
 
+import java.util.Map;
+
 /**
  * User registered in the server
  *
  * @author Sylvain PALOMINOS
  */
 public class User {
+
+    //String ou Integer, selon le type d'id pour les utilisateurs.
+    private String id;
+    private String username;
+    private String password;
+    //String ou Integer, selon le type d'id pour les groupes.
+    private Map<String, Boolean> listGroups;
+    private Boolean superAdmin;
+
+    /**
+     * @param id
+     * @param username
+     * @param password
+     * @param listGroups
+     * @param superAdmin
+     */
+    public User(String id, String username, String password, Map<String, Boolean> listGroups, Boolean superAdmin) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.listGroups = listGroups;
+        this.superAdmin = superAdmin;
+    }
+
+    /**
+     * @return
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * @return
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * @return
+     */
+    public Map<String, Boolean> getListGroups() {
+        return listGroups;
+    }
+
+    /**
+     * @param listGroups
+     */
+    public void setListGroups(Map<String, Boolean> listGroups) {
+        this.listGroups = listGroups;
+    }
+
+    /**
+     * @return
+     */
+    public Boolean getSuperAdmin() {
+        return superAdmin;
+    }
+
+    /**
+     * @param superAdmin
+     */
+    public void setSuperAdmin(Boolean superAdmin) {
+        this.superAdmin = superAdmin;
+    }
+
+    /**
+     * @return
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 }
