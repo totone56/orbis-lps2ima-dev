@@ -47,12 +47,10 @@ import java.util.Map;
  */
 public class User {
 
-    //String ou Integer, selon le type d'id pour les utilisateurs.
-    private String id;
+    private Integer id;
     private String username;
     private String password;
-    //String ou Integer, selon le type d'id pour les groupes.
-    private Map<String, Boolean> listGroups;
+    private Map<Integer, Boolean> listGroups;
     private Boolean superAdmin;
 
     /**
@@ -62,7 +60,7 @@ public class User {
      * @param listGroups
      * @param superAdmin
      */
-    public User(String id, String username, String password, Map<String, Boolean> listGroups, Boolean superAdmin) {
+    public User(Integer id, String username, String password, Map<Integer, Boolean> listGroups, Boolean superAdmin) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -101,14 +99,14 @@ public class User {
     /**
      * @return
      */
-    public Map<String, Boolean> getListGroups() {
+    public Map<Integer, Boolean> getListGroups() {
         return listGroups;
     }
 
     /**
      * @param listGroups
      */
-    public void setListGroups(Map<String, Boolean> listGroups) {
+    public void setListGroups(Map<Integer, Boolean> listGroups) {
         this.listGroups = listGroups;
     }
 
@@ -129,14 +127,14 @@ public class User {
     /**
      * @return
      */
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
     /**
      * @param id
      */
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }
