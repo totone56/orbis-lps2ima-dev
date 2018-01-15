@@ -87,7 +87,7 @@ public class Session {
     /** Workspace folder. */
     private File workspaceFolder;
     /** User associated to the session. */
-    private User user;
+    private String username;
     /** List of services instance for the Session. */
     private List<Service> serviceList;
     /** List of StatusInfo. This list is used as a cache saving all the process executed and waiting for the data
@@ -109,9 +109,9 @@ public class Session {
     /**
      * Main constructor.
      */
-    public Session(User user, UUID token, BaseServerImpl baseServerImpl){
+    public Session(String user, UUID token, BaseServerImpl baseServerImpl){
         this.token = token;
-        this.user = user;
+        this.username = user;
         isActive = false;
         jobIdServiceMap = new HashMap<>();
         finishedJobMap = new HashMap<>();
@@ -189,8 +189,8 @@ public class Session {
      * Returns the user of the session.
      * @return The session user.
      */
-    public User getUser(){
-        return user;
+    public String getUser(){
+        return username;
     }
 
     /**
