@@ -52,13 +52,15 @@
         <link rel="stylesheet" href="/assets/css/coloring_anim.css"/>
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:400,300,700" type="text/css" />
         <link rel="stylesheet" href="/assets/css/navbar.css"/>
-        <link rel="stylesheet" href="/assets/css/home.css"/>
+        <link rel="stylesheet" href="/assets/css/style.css"/>
 
         <script src="/libs/jquery.min.js"></script>
         <script src="/libs/js/bootstrap.min.js"></script>
         <script src="/assets/js/main_script.js"></script>
+
     </head>
     <body>
+        
 
         <!-- TODO : Handle and display the error more friendly. -->
 
@@ -79,13 +81,21 @@
                         </li>
                         <li>
                             <a id="Share" onclick="javascript:share();" class="navbar-brand" href="#">Share</a>
+
                         </li>
+                        <!-- ajout d'un menu user pour visu et modif d'un user-->
+                        <li>
+                            <a id="Share" onclick="javascript:user_settings();" class="navbar-brand" href="#">User</a>
+                        </li>
+
                     </ul>
                     <ul class="nav navbar-nav navbar-right" id="user_ul">
                     </ul>
                 </div>
             </nav>
         </div>
+
+        <!-- creation des menu "Data", "process" et "Share" -->
         <div>
             <div id="left-nav">
                 <nav class="navbar navbar-default" role="navigation">
@@ -144,8 +154,11 @@
                             <form id="login-form" action="/login" method="post">
                                 <div id="login-modal-body" class="modal-body form-group">
                                     <label id="text-login-msg" class="control-label">
-                                        Type your username and password
+                                        Type your group, username and password
                                     </label>
+                                    <!--mise en place d'une connexion a un group dédié -->
+                                    <input id="groupe" name="groupe" class="form-control" type="text" placeholder="Groupname" required="false"/>
+
                                     <input id="login_username" name="username" class="form-control" type="text"
                                            placeholder="Username" required="true"/>
                                     <input id="login_password" name="password" class="form-control" type="password"

@@ -36,7 +36,7 @@
 - or contact directly:
 - info_at_ orbisgis.org
 -->
-
+<link rel="stylesheet" href="/assets/css/style.css"/>
 <div class="col-md-1"></div>
 <div class="col-md-1"></div>
 <div class="panel panel-default col-md-8" id="user-settings-panel">
@@ -44,6 +44,38 @@
         <ul class="element_list">
             <li>
                 <h1>Settings</h1>
+            </li>
+            <li>
+                <ul>
+                    <li>
+                        <form id="name_change_form" action="/user/settings" method="post">
+                            <h3>WorkGroup</h3>
+                            <p>Change your WorkGroup</p>
+                            <input id="group" name="group" class="form-control" type="text" />
+
+                            <button id="change_group_btn" type="submit" class="btn btn-primary">
+                                Change WorkGroup
+                            </button>
+                            <p id="group_change_text"></p>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <ul>
+                    <li>
+                        <form id="name_change_form" action="/user/settings" method="post">
+                            <h3>Name</h3>
+                            <p>Change your Name</p>
+                            <input id="name" name="name" class="form-control" type="text" />
+
+                            <button id="change_name_btn" type="submit" class="btn btn-primary">
+                                Change name
+                            </button>
+                            <p id="name_change_text"></p>
+                        </form>
+                    </li>
+                </ul>
             </li>
             <li>
                 <ul>
@@ -77,59 +109,6 @@
 <div class="col-md-1"></div>
 <div class="col-md-1"></div>
 
-<style>
-#upload-image{
-    width: 100%;
-}
-
-#settings_user_icon{
-    text-align: center;
-    border: 1px solid #e7e7e7;
-    border-radius: 5px;
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-#user-settings-panel{
-    margin-top:10px;
-    padding: 10px;
-}
-
-.element_list {
-    list-style-type: none;
-    list-style-position:inside;
-    margin:0;
-    padding:0;
-    width: 100%;
-}
-
-.element_list input {
-    margin-bottom: 5px;
-    border-radius: 0;
-}
-
-.element_list button {
-    margin-top: 10px;
-}
-
-.element_list ul {
-    list-style-type: none;
-    list-style-position:inside;
-    margin:0;
-    padding:0;
-    width: 100%;
-}
-
-.element_list li {
-    margin-top: 10px
-    width: 100%;
-    border-bottom: 1px solid #e7e7e7;
-}
-
-.element_list li:last-child {
-    border-bottom: none;
-}
-</style>
 
 <script>
     $(function() {
@@ -148,6 +127,47 @@
                 },
                 error: function(data) {
                     $('#pwd_change_text').html(data.responseText);
+                }
+            });
+        });
+    });
+
+
+    $(function() {
+        $("#name_change_form").on("submit", function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: $('#name_change_form')[0].action,
+                type: 'POST',
+                data: {
+                    "name": $("#name").val(),
+                    "token": readCookie("token")
+                },
+                success: function(data) {
+                    $('#name_change_text').html(data);
+                },
+                error: function(data) {
+                    $('#name_change_text').html(data.responseText);
+                }
+            });
+        });
+    });
+
+    $(function() {
+        $("#group_change_form").on("submit", function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: $('#group_change_form')[0].action,
+                type: 'POST',
+                data: {
+                    "group": $("#group").val(),
+                    "token": readCookie("token")
+                },
+                success: function(data) {
+                    $('#group_change_text').html(data);
+                },
+                error: function(data) {
+                    $('#group_change_text').html(data.responseText);
                 }
             });
         });
