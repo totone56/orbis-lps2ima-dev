@@ -58,9 +58,8 @@ public class SessionInitializer implements Runnable {
 
         //Creates the session DataSource
         DataSource dataSource = null;
-        String dataBaseLocation = new File(workspaceFolder, "h2_db.mv.db").getAbsolutePath();
         try {
-            dataSource = SFSUtilities.wrapSpatialDataSource(H2GISDBFactory.createDataSource(dataBaseLocation, true));
+            dataSource = SFSUtilities.wrapSpatialDataSource(H2GISDBFactory.createDataSource("/../../../workspace/"+this.token+"/h2_db", true));
         } catch (SQLException e) {
             LOGGER.error("Unable to create the database : \n"+e.getMessage());
         }

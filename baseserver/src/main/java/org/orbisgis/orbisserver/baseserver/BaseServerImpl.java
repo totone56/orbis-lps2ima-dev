@@ -38,7 +38,6 @@
  */
 package org.orbisgis.orbisserver.baseserver;
 
-import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Instantiate;
 import org.apache.felix.ipojo.annotations.Provides;
 import org.apache.felix.ipojo.annotations.Requires;
@@ -63,6 +62,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
+import org.orbisgis.orbisserver.baseserver.utils.DatabaseRequest;
 
 /**
  * Main class of the module. This class is the core managing the user auth and the sessions.
@@ -85,6 +85,8 @@ public class BaseServerImpl extends DefaultController implements BaseServer {
 
     /** List of the service factory registered. */
     private List<ServiceFactory> serviceFactoryList;
+    
+    private DatabaseRequest dbRequest;
 
     /** Wisdom executor service, used for the session initialisation. */
     @Requires(filter = "(name=" + ManagedExecutorService.SYSTEM + ")", proxy = false)
@@ -125,6 +127,10 @@ public class BaseServerImpl extends DefaultController implements BaseServer {
         } catch (IOException e) {
             LOGGER.error("Unable to read the database initiation script\n"+e.getMessage());
         }
+        
+        dbRequest = DatabaseRequest.getInstance();
+        dbRequest.setDataSource(ds);
+        
     }
 
     @Override
@@ -268,7 +274,7 @@ public class BaseServerImpl extends DefaultController implements BaseServer {
                         "INSERT INTO session_table VALUES (?,?,?,?);");
                 ps.setString(1, username);
                 ps.setString(2, password);
-                ps.setString(3, "999999");
+                ps.setString(3, "172800000");
                 ps.setString(4, "10");
                 ps.execute();
             } catch (SQLException e) {
