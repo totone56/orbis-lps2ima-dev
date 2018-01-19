@@ -1,0 +1,23 @@
+package org.orbisgis.orbisserver.api.model ;
+import java.util.List;
+
+public class BundleOrbisserver {
+    private List<Operation> listScript ;
+    private String name;
+
+    public void setListScript(List<Operation> listScript) {
+        this.listScript = listScript;
+    }
+
+    public void setName(String name ){
+        this.name = name ;
+    }
+
+    public List<Operation> getListScript() {
+        return listScript;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
