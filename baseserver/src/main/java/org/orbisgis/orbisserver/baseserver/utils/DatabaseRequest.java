@@ -8,8 +8,6 @@ import com.mysql.jdbc.*;
 import java.sql.PreparedStatement;
 import javax.sql.DataSource;
 import jdk.nashorn.internal.ir.Statement;
-//import org.springframework.jdbc.core.JdbcTemplate;
-//import org.sqlite.JDBC;
 
 public class DatabaseRequest{
 
