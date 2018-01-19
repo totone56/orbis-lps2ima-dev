@@ -189,7 +189,7 @@ public class Session {
      * Returns the user of the session.
      * @return The session user.
      */
-    public String getUser(){
+    public String getUsername(){
         return username;
     }
 
