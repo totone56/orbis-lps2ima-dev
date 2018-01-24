@@ -2,6 +2,7 @@ package org.orbisgis.orbisserver.baseserver.utils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.sql.PreparedStatement;
 import javax.sql.DataSource;
@@ -34,11 +35,12 @@ public class DatabaseRequest {
                 result = ps.executeQuery();
                 System.out.println(result);
             } else {
-                /**for(int i = 0; i < parameters.length; i++){
-                 params+=parameters[i]+", ";
-                 }
-                 Statement select = ds.createStatement();
-                 result = select.executeQuery("select "+params+" from "+table+" where ? = ?");*/
+                for (String k : parameters.keySet()) {
+                    params += k + ", ";
+                }
+
+                Statement select = ds.getConnection().createStatement();
+                result = select.executeQuery("select " + params + " from " + table + " where ? = ?");
             }
 
         } catch (SQLException sqle) {

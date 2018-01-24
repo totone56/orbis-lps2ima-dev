@@ -3,6 +3,7 @@ package org.orbisgis.orbisserver.baseserver.model;
 import org.orbisgis.orbisserver.baseserver.utils.DatabaseRequest;
 
 import java.security.MessageDigest;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,7 +32,7 @@ public class Hachage {
         boolean ret = false;
 
         DatabaseRequest bddRequest = new DatabaseRequest();
-        ArrayList<Object> result = new ArrayList<Object>();
+        ResultSet result;
 
         //On créer le hashMap contenant les paramètres la requête à effectuer
         HashMap data = new HashMap();
