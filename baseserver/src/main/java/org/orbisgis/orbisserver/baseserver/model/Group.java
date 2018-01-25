@@ -81,59 +81,6 @@ public class Group extends DefaultController {
    * @see Group#removeBundle(BundleOrbisServer, User)
    */
   private ArrayList<BundleOrbisServer> bundles = new ArrayList<BundleOrbisServer>();
-  /**
-   * The name of the table containing the groups in the database.
-   */
-  private static final String GROUP_TABLE = "Group";
-  /**
-   * The name of the table containing the users in the database.
-   */
-  private static final String USER_TABLE = "User";
-  /**
-   * The name of the table containing the links between the users and the groups
-   * in the database.
-   */
-  private static final String LINK_TABLE = "LinkUserGroup";
-  /**
-   * The name of the IDs in the table of the groups.
-   */
-  private static final String ID_GROUP = "idGroup";
-  /**
-   * The name of the names in the table of the groups.
-   */
-  private static final String GROUP_NAME = "nom";
-  /**
-   * The name of the persistence in the table of the groups.
-   */
-  private static final String GROUP_PERSISTENCE = "persistance";
-  /**
-   * The name of the groups in the table of the links.
-   */
-  private static final String LINK_GROUP = "idGroup";
-  /**
-   * The name of the users in the table of the links.
-   */
-  private static final String LINK_USER = "idUser";
-  /**
-   * The name of the administrators in the table of the links.
-   */
-  private static final String LINK_ADMIN = "admin";
-  /**
-   * The name of the IDs in the table of the users.
-   */
-  private static final String USER_ID = "idUser";
-  /**
-   * The name of the user names in the table of the users.
-   */
-  private static final String USER_USERNAME = "pseudo";
-  /**
-   * The name of the passwords in the table of the users.
-   */
-  private static final String USER_PASSWORD = "password";
-  /**
-   * The name of the super administrators in the table of the users.
-   */
-  private static final String USER_SUPER_ADMIN = "superAdmin";
 
   /**
    * This constructor load the group from the database.
@@ -148,8 +95,8 @@ public class Group extends DefaultController {
    * @see Group#id
    */
   public Group(int id) throws DatabaseException {
-    ResultSet group = DatabaseRequest.getInstance().find(GROUP_TABLE, ID_GROUP, Integer.toString(
-        id), null);
+    ResultSet group = DatabaseRequest.getInstance().find(DatabaseElements.GROUP_TABLE,
+        DatabaseElements.ID_GROUP, Integer.toString(id), null);
 
     if (group == null) {
       throw new DatabaseException(
@@ -162,11 +109,11 @@ public class Group extends DefaultController {
     }
 
     this.id = id;
-    groupName = group.getString(GROUP_NAME);
-    persistence = group.getBoolean(GROUP_PERSISTENCE);
+    groupName = group.getString(DatabaseElements.GROUP_NAME);
+    persistence = group.getBoolean(DatabaseElements.GROUP_PERSISTENCE);
 
-    ResultSet users = DatabaseRequest.getInstance().find(LINK_TABLE, LINK_GROUP, Integer.toString(
-        id), null);
+    ResultSet users = DatabaseRequest.getInstance().find(DatabaseElements.LINK_TABLE,
+        DatabaseElements.LINK_GROUP, Integer.toString(id), null);
 
     if (users == null) {
       throw new DatabaseException(
@@ -175,8 +122,8 @@ public class Group extends DefaultController {
     }
 
     while (users.next()) {
-      ResultSet user = DatabaseRequest.getInstance().find(USER_TABLE, USER_ID, users.getString(
-          LINK_USER), null);
+      ResultSet user = DatabaseRequest.getInstance().find(DatabaseElements.USER_TABLE,
+          DatabaseElements.USER_ID, users.getString(DatabaseElements.LINK_USER), null);
 
       if (user == null) {
         throw new DatabaseException(
@@ -191,9 +138,10 @@ public class Group extends DefaultController {
                 + " n'existe pas dans la table User.");
       }
 
-      User newUser = new User(user.getInt(USER_ID), user.getString(USER_USERNAME), user.getString(
-          USER_PASSWORD), null, user.getBoolean(USER_SUPER_ADMIN));
-      if (users.getBoolean(LINK_ADMIN)) {
+      User newUser = new User(user.getInt(DatabaseElements.USER_ID), user.getString(
+          DatabaseElements.USER_USERNAME), user.getString(DatabaseElements.USER_PASSWORD), null,
+          user.getBoolean(DatabaseElements.USER_SUPER_ADMIN));
+      if (users.getBoolean(DatabaseElements.LINK_ADMIN)) {
         admins.add(newUser);
       } else {
         this.users.add(newUser);
@@ -236,18 +184,19 @@ public class Group extends DefaultController {
       this.persistence = persistence;
 
       HashMap<String, String> parameters = new HashMap<String, String>(3);
-      parameters.put(ID_GROUP, Integer.toString(id));
-      parameters.put(GROUP_NAME, groupName);
-      parameters.put(GROUP_PERSISTENCE, Boolean.toString(persistence));
+      parameters.put(DatabaseElements.ID_GROUP, Integer.toString(id));
+      parameters.put(DatabaseElements.GROUP_NAME, groupName);
+      parameters.put(DatabaseElements.GROUP_PERSISTENCE, Boolean.toString(persistence));
 
-      if (DatabaseRequest.getInstance().insert(GROUP_TABLE, parameters)) {
+      if (DatabaseRequest.getInstance().insert(DatabaseElements.GROUP_TABLE, parameters)) {
         parameters = new HashMap<String, String>(3);
-        parameters.put(LINK_GROUP, Integer.toString(id));
-        parameters.put(LINK_USER, Integer.toString(admin.getId()));
-        parameters.put(LINK_ADMIN, "true");
+        parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
+        parameters.put(DatabaseElements.LINK_USER, Integer.toString(admin.getId()));
+        parameters.put(DatabaseElements.LINK_ADMIN, "true");
 
-        if (!DatabaseRequest.getInstance().insert(LINK_TABLE, parameters)) {
-          if (DatabaseRequest.getInstance().remove(GROUP_TABLE, ID_GROUP, Integer.toString(id))) {
+        if (!DatabaseRequest.getInstance().insert(DatabaseElements.LINK_TABLE, parameters)) {
+          if (DatabaseRequest.getInstance().remove(DatabaseElements.GROUP_TABLE,
+              DatabaseElements.ID_GROUP, Integer.toString(id))) {
             throw new DatabaseException(
                 "Une erreur est survenue dans la base de données, le groupe n'a pas été créé.");
           } else {
@@ -308,12 +257,12 @@ public class Group extends DefaultController {
       DatabaseException {
     if (currentUser.getSuperAdmin()) {
       HashMap<String, String> set = new HashMap<String, String>(1);
-      set.put(GROUP_NAME, groupName);
+      set.put(DatabaseElements.GROUP_NAME, groupName);
 
       HashMap<String, String> parameters = new HashMap<String, String>(1);
-      parameters.put(ID_GROUP, Integer.toString(id));
+      parameters.put(DatabaseElements.ID_GROUP, Integer.toString(id));
 
-      if (DatabaseRequest.getInstance().update(GROUP_TABLE, set, parameters)) {
+      if (DatabaseRequest.getInstance().update(DatabaseElements.GROUP_TABLE, set, parameters)) {
         this.groupName = groupName;
       } else {
         throw new DatabaseException(
@@ -355,12 +304,12 @@ public class Group extends DefaultController {
       DatabaseException {
     if (currentUser.getSuperAdmin()) {
       HashMap<String, String> set = new HashMap<String, String>(1);
-      set.put(GROUP_PERSISTENCE, Boolean.toString(persistence));
+      set.put(DatabaseElements.GROUP_PERSISTENCE, Boolean.toString(persistence));
 
       HashMap<String, String> parameters = new HashMap<String, String>(1);
-      parameters.put(ID_GROUP, Integer.toString(id));
+      parameters.put(DatabaseElements.ID_GROUP, Integer.toString(id));
 
-      if (DatabaseRequest.getInstance().update(GROUP_TABLE, set, parameters)) {
+      if (DatabaseRequest.getInstance().update(DatabaseElements.GROUP_TABLE, set, parameters)) {
         this.persistence = persistence;
       } else {
         throw new DatabaseException(
@@ -435,13 +384,14 @@ public class Group extends DefaultController {
         if (currentUser.getSuperAdmin()) {
           if (admins.size() > 1) {
             HashMap<String, String> set = new HashMap<String, String>(1);
-            set.put(LINK_ADMIN, "false");
+            set.put(DatabaseElements.LINK_ADMIN, "false");
 
             HashMap<String, String> parameters = new HashMap<String, String>(2);
-            parameters.put(LINK_GROUP, Integer.toString(id));
-            parameters.put(LINK_USER, Integer.toString(user.getId()));
+            parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
+            parameters.put(DatabaseElements.LINK_USER, Integer.toString(user.getId()));
 
-            if (DatabaseRequest.getInstance().update(LINK_TABLE, set, parameters)) {
+            if (DatabaseRequest.getInstance().update(DatabaseElements.LINK_TABLE, set,
+                parameters)) {
               deleteAdmin(user);
               users.add(user);
             } else {
@@ -461,11 +411,11 @@ public class Group extends DefaultController {
       } else {
         if (isAdmin(currentUser)) {
           HashMap<String, String> parameters = new HashMap<String, String>(3);
-          parameters.put(LINK_ADMIN, "false");
-          parameters.put(LINK_GROUP, Integer.toString(id));
-          parameters.put(LINK_USER, Integer.toString(user.getId()));
+          parameters.put(DatabaseElements.LINK_ADMIN, "false");
+          parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
+          parameters.put(DatabaseElements.LINK_USER, Integer.toString(user.getId()));
 
-          if (DatabaseRequest.getInstance().insert(LINK_TABLE, parameters)) {
+          if (DatabaseRequest.getInstance().insert(DatabaseElements.LINK_TABLE, parameters)) {
             users.add(user);
           } else {
             throw new DatabaseException(
@@ -500,13 +450,13 @@ public class Group extends DefaultController {
       if (!isAdmin(admin)) {
         if (isUser(admin)) {
           HashMap<String, String> set = new HashMap<String, String>(1);
-          set.put(LINK_ADMIN, "true");
+          set.put(DatabaseElements.LINK_ADMIN, "true");
 
           HashMap<String, String> parameters = new HashMap<String, String>(2);
-          parameters.put(LINK_GROUP, Integer.toString(id));
-          parameters.put(LINK_USER, Integer.toString(admin.getId()));
+          parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
+          parameters.put(DatabaseElements.LINK_USER, Integer.toString(admin.getId()));
 
-          if (DatabaseRequest.getInstance().update(LINK_TABLE, set, parameters)) {
+          if (DatabaseRequest.getInstance().update(DatabaseElements.LINK_TABLE, set, parameters)) {
             deleteUser(admin);
             admins.add(admin);
           } else {
@@ -516,11 +466,11 @@ public class Group extends DefaultController {
           }
         } else {
           HashMap<String, String> parameters = new HashMap<String, String>(3);
-          parameters.put(LINK_ADMIN, "true");
-          parameters.put(LINK_GROUP, Integer.toString(id));
-          parameters.put(LINK_USER, Integer.toString(admin.getId()));
+          parameters.put(DatabaseElements.LINK_ADMIN, "true");
+          parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
+          parameters.put(DatabaseElements.LINK_USER, Integer.toString(admin.getId()));
 
-          if (DatabaseRequest.getInstance().insert(LINK_TABLE, parameters)) {
+          if (DatabaseRequest.getInstance().insert(DatabaseElements.LINK_TABLE, parameters)) {
             admins.add(admin);
           } else {
             throw new DatabaseException(
