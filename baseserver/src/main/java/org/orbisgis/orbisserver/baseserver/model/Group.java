@@ -1,10 +1,13 @@
 package org.orbisgis.orbisserver.baseserver.model;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.orbisgis.orbisserver.api.model.BundleOrbisserver;
+import org.orbisgis.orbisserver.baseserver.utils.DatabaseElements;
 import org.orbisgis.orbisserver.baseserver.utils.DatabaseRequest;
 import org.wisdom.api.DefaultController;
 
@@ -27,7 +30,7 @@ import org.wisdom.api.DefaultController;
  *
  * @see Session
  * @see User
- * @see BundleOrbisServer
+ * @see BundleOrbisserver
  * @see NoRightException
  * @see AdminException
  */
@@ -77,10 +80,10 @@ public class Group extends DefaultController {
    * Contains the list of all the bundles of the group.
    * 
    * @see Group#getBundles()
-   * @see Group#addBundle(BundleOrbisServer, User)
-   * @see Group#removeBundle(BundleOrbisServer, User)
+   * @see Group#addBundle(BundleOrbisserver, User)
+   * @see Group#removeBundle(BundleOrbisserver, User)
    */
-  private ArrayList<BundleOrbisServer> bundles = new ArrayList<BundleOrbisServer>();
+  private ArrayList<BundleOrbisserver> bundles = new ArrayList<BundleOrbisserver>();
 
   /**
    * This constructor load the group from the database.
@@ -94,7 +97,7 @@ public class Group extends DefaultController {
    * 
    * @see Group#id
    */
-  public Group(int id) throws DatabaseException {
+  public Group(int id) throws DatabaseException, SQLException {
     ResultSet group = DatabaseRequest.getInstance().find(DatabaseElements.GROUP_TABLE,
         DatabaseElements.ID_GROUP, Integer.toString(id), null);
 
@@ -351,7 +354,7 @@ public class Group extends DefaultController {
    * 
    * @see Group#bundles
    */
-  public ArrayList<BundleOrbisServer> getBundles() {
+  public ArrayList<BundleOrbisserver> getBundles() {
     return bundles;
   }
 
@@ -498,7 +501,7 @@ public class Group extends DefaultController {
    * 
    * @see Group#bundles
    */
-  public void addBundle(BundleOrbisServer bundle, User currentUser) throws NoRightException {
+  public void addBundle(BundleOrbisserver bundle, User currentUser) throws NoRightException {
     if (isAdmin(currentUser)) {
       // TODO Ajouter des vérifications pour savoir si l'on a déjà ce bundle ou non
       // lorsque l'on aura plus d'informations sur la classe BundleOrbisServer
@@ -603,7 +606,7 @@ public class Group extends DefaultController {
    * 
    * @see Group#bundles
    */
-  public void removeBundle(BundleOrbisServer bundle, User currentUser) throws NoRightException {
+  public void removeBundle(BundleOrbisserver bundle, User currentUser) throws NoRightException {
     if (isAdmin(currentUser)) {
       bundles.remove(bundle);
 
