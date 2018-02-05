@@ -1,4 +1,4 @@
-package org.orbisgis.orbisserver.baseserver.model;
+package org.orbisgis.orbisserver.baseserver.exception;
 
 /**
  * <b>This exception is thrown when an user attempt to do something without the

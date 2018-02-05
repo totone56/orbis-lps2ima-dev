@@ -1,4 +1,6 @@
-package org.orbisgis.orbisserver.baseserver.model;
+package org.orbisgis.orbisserver.baseserver.exception;
+
+import org.orbisgis.orbisserver.baseserver.model.Group;
 
 /**
  * <b>This exception is thrown when there is an attempt to remove the last

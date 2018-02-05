@@ -1,4 +1,4 @@
-package org.orbisgis.orbisserver.baseserver.model;
+package org.orbisgis.orbisserver.baseserver.utils;
 
 /**
  * <b>Contains all the names related to the database.</b>
@@ -11,60 +11,83 @@ package org.orbisgis.orbisserver.baseserver.model;
  * 
  * @version 1.0
  * 
- * @see Group
+ * @see DatabaseRequest
  */
-public final class DatabaseElements {
+public enum DatabaseElements {
   /**
    * The name of the table containing the groups in the database.
    */
-  public static final String GROUP_TABLE = "Group";
+  GROUP_TABLE("Group"),
   /**
    * The name of the table containing the users in the database.
    */
-  public static final String USER_TABLE = "User";
+  USER_TABLE("User"),
   /**
    * The name of the table containing the links between the users and the groups
    * in the database.
    */
-  public static final String LINK_TABLE = "LinkUserGroup";
+  LINK_TABLE("LinkUserGroup"),
   /**
    * The name of the IDs in the table of the groups.
    */
-  public static final String ID_GROUP = "idGroup";
+  ID_GROUP("idGroup"),
   /**
    * The name of the names in the table of the groups.
    */
-  public static final String GROUP_NAME = "nom";
+  GROUP_NAME("nom"),
   /**
    * The name of the persistence in the table of the groups.
    */
-  public static final String GROUP_PERSISTENCE = "persistance";
+  GROUP_PERSISTENCE("persistance"),
   /**
    * The name of the groups in the table of the links.
    */
-  public static final String LINK_GROUP = "idGroup";
+  LINK_GROUP("idGroup"),
   /**
    * The name of the users in the table of the links.
    */
-  public static final String LINK_USER = "idUser";
+  LINK_USER("idUser"),
   /**
    * The name of the administrators in the table of the links.
    */
-  public static final String LINK_ADMIN = "admin";
+  LINK_ADMIN("admin"),
   /**
    * The name of the IDs in the table of the users.
    */
-  public static final String USER_ID = "idUser";
+  USER_ID("idUser"),
   /**
    * The name of the user names in the table of the users.
    */
-  public static final String USER_USERNAME = "pseudo";
+  USER_USERNAME("pseudo"),
   /**
    * The name of the passwords in the table of the users.
    */
-  public static final String USER_PASSWORD = "password";
+  USER_PASSWORD("password"),
   /**
    * The name of the super administrators in the table of the users.
    */
-  public static final String USER_SUPER_ADMIN = "superAdmin";
+  USER_SUPER_ADMIN("superAdmin");
+
+  /**
+   * Contains the name of the element in the database.
+   */
+  private String name;
+
+  /**
+   * To create an element of the enumeration.
+   * 
+   * @param name
+   *          the name of the element in the database
+   */
+  DatabaseElements(String name) {
+    this.name = name;
+  }
+
+  /**
+   * To get the name of the element in the database.
+   */
+  @Override
+  public String toString() {
+    return name;
+  }
 }

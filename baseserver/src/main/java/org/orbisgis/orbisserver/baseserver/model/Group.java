@@ -1,10 +1,17 @@
 package org.orbisgis.orbisserver.baseserver.model;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.orbisgis.orbisserver.api.model.BundleOrbisserver;
+import org.orbisgis.orbisserver.baseserver.exception.AdminException;
+import org.orbisgis.orbisserver.baseserver.exception.DatabaseException;
+import org.orbisgis.orbisserver.baseserver.exception.NoDataSourceException;
+import org.orbisgis.orbisserver.baseserver.exception.NoRightException;
+import org.orbisgis.orbisserver.baseserver.utils.DatabaseElements;
 import org.orbisgis.orbisserver.baseserver.utils.DatabaseRequest;
 import org.wisdom.api.DefaultController;
 
@@ -27,7 +34,7 @@ import org.wisdom.api.DefaultController;
  *
  * @see Session
  * @see User
- * @see BundleOrbisServer
+ * @see BundleOrbisserver
  * @see NoRightException
  * @see AdminException
  */
@@ -77,10 +84,10 @@ public class Group extends DefaultController {
    * Contains the list of all the bundles of the group.
    * 
    * @see Group#getBundles()
-   * @see Group#addBundle(BundleOrbisServer, User)
-   * @see Group#removeBundle(BundleOrbisServer, User)
+   * @see Group#addBundle(BundleOrbisserver, User)
+   * @see Group#removeBundle(BundleOrbisserver, User)
    */
-  private ArrayList<BundleOrbisServer> bundles = new ArrayList<BundleOrbisServer>();
+  private ArrayList<BundleOrbisserver> bundles = new ArrayList<BundleOrbisserver>();
 
   /**
    * This constructor load the group from the database.
@@ -95,61 +102,71 @@ public class Group extends DefaultController {
    * @see Group#id
    */
   public Group(int id) throws DatabaseException {
-    ResultSet group = DatabaseRequest.getInstance().find(DatabaseElements.GROUP_TABLE,
-        DatabaseElements.ID_GROUP, Integer.toString(id), null);
+    try {
+      ResultSet group = DatabaseRequest.getInstance().find(DatabaseElements.GROUP_TABLE,
+          DatabaseElements.ID_GROUP, Integer.toString(id));
 
-    if (group == null) {
-      throw new DatabaseException(
-          "Une erreur est survenue dans la base de données, le groupe n'a pas pu être récupéré.");
-    }
-
-    if (!group.next()) {
-      throw new DatabaseException(
-          "Aucun groupe correspondant à l'ID fourni n'a été trouvé dans la base de données.");
-    }
-
-    this.id = id;
-    groupName = group.getString(DatabaseElements.GROUP_NAME);
-    persistence = group.getBoolean(DatabaseElements.GROUP_PERSISTENCE);
-
-    ResultSet users = DatabaseRequest.getInstance().find(DatabaseElements.LINK_TABLE,
-        DatabaseElements.LINK_GROUP, Integer.toString(id), null);
-
-    if (users == null) {
-      throw new DatabaseException(
-          "Une erreur est survenue dans la base de données, les utilisateurs du groupe"
-              + " n'ont pas pu être récupérés.");
-    }
-
-    while (users.next()) {
-      ResultSet user = DatabaseRequest.getInstance().find(DatabaseElements.USER_TABLE,
-          DatabaseElements.USER_ID, users.getString(DatabaseElements.LINK_USER), null);
-
-      if (user == null) {
+      if (group == null) {
         throw new DatabaseException(
-            "Une erreur est survenue dans la base de données, un utilisateur n'a pas pu"
-                + " être récupéré.");
+            "Une erreur est survenue dans la base de donnÃ©es, le groupe n'a pas pu Ãªtre rÃ©cupÃ©rÃ©.");
       }
 
-      if (!user.next()) {
+      if (!group.next()) {
         throw new DatabaseException(
-            "Une erreur a été rencontrée avec la base de données, son intégrité semble"
-                + " compromise. Un utilisateur évoqué dans la table LinkUserGroup"
-                + " n'existe pas dans la table User.");
+            "Aucun groupe correspondant Ã  l'ID fourni n'a Ã©tÃ© trouvÃ© dans la base de donnÃ©es.");
       }
 
-      User newUser = new User(user.getInt(DatabaseElements.USER_ID), user.getString(
-          DatabaseElements.USER_USERNAME), user.getString(DatabaseElements.USER_PASSWORD), null,
-          user.getBoolean(DatabaseElements.USER_SUPER_ADMIN));
-      if (users.getBoolean(DatabaseElements.LINK_ADMIN)) {
-        admins.add(newUser);
-      } else {
-        this.users.add(newUser);
+      this.id = id;
+      groupName = group.getString(DatabaseElements.GROUP_NAME.toString());
+      persistence = group.getBoolean(DatabaseElements.GROUP_PERSISTENCE.toString());
+
+      ResultSet users = DatabaseRequest.getInstance().find(DatabaseElements.LINK_TABLE,
+          DatabaseElements.LINK_GROUP, Integer.toString(id));
+
+      if (users == null) {
+        throw new DatabaseException(
+            "Une erreur est survenue dans la base de donnÃ©es, les utilisateurs du groupe"
+                + " n'ont pas pu Ãªtre rÃ©cupÃ©rÃ©s.");
       }
+
+      while (users.next()) {
+        ResultSet user = DatabaseRequest.getInstance().find(DatabaseElements.USER_TABLE,
+            DatabaseElements.USER_ID, users.getString(DatabaseElements.LINK_USER.toString()));
+
+        if (user == null) {
+          throw new DatabaseException(
+              "Une erreur est survenue dans la base de donnÃ©es, un utilisateur n'a pas pu"
+                  + " Ãªtre rÃ©cupÃ©rÃ©.");
+        }
+
+        if (!user.next()) {
+          throw new DatabaseException(
+              "Une erreur a Ã©tÃ© rencontrÃ©e avec la base de donnÃ©es, son intÃ©gritÃ© semble"
+                  + " compromise. Un utilisateur indiquÃ© dans la table LinkUserGroup"
+                  + " n'existe pas dans la table User.");
+        }
+
+        User newUser = new User(user.getInt(DatabaseElements.USER_ID.toString()), user.getString(
+            DatabaseElements.USER_USERNAME.toString()), user.getString(
+                DatabaseElements.USER_PASSWORD.toString()), null, user.getBoolean(
+                    DatabaseElements.USER_SUPER_ADMIN.toString()));
+        if (users.getBoolean(DatabaseElements.LINK_ADMIN.toString())) {
+          admins.add(newUser);
+        } else {
+          this.users.add(newUser);
+        }
+      }
+
+      // TODO RÃ©cupÃ©rer les bundles associÃ©s au groupe dans la base de donnÃ©es
+      // lorsque cette derniÃ¨re aura une liaison entre les tables Group et Bundle
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw new DatabaseException(
+          "Une erreur est survenue lors du traitement des rÃ©sultats de la requÃªte.");
+    } catch (NoDataSourceException e) {
+      throw new DatabaseException(
+          "La source des donnÃ©es n'a pas Ã©tÃ© dÃ©finie, aucune requÃªte ne peut Ãªtre effectuÃ©e.");
     }
-
-    // TODO Récupérer les bundles associées au groupe dans la base de données
-    // lorsque cette dernière aura une liaison entre les tables Group et Bundle
   }
 
   /**
@@ -183,36 +200,42 @@ public class Group extends DefaultController {
       this.groupName = groupName;
       this.persistence = persistence;
 
-      HashMap<String, String> parameters = new HashMap<String, String>(3);
+      HashMap<DatabaseElements, String> parameters = new HashMap<DatabaseElements, String>(3);
       parameters.put(DatabaseElements.ID_GROUP, Integer.toString(id));
       parameters.put(DatabaseElements.GROUP_NAME, groupName);
       parameters.put(DatabaseElements.GROUP_PERSISTENCE, Boolean.toString(persistence));
 
-      if (DatabaseRequest.getInstance().insert(DatabaseElements.GROUP_TABLE, parameters)) {
-        parameters = new HashMap<String, String>(3);
-        parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
-        parameters.put(DatabaseElements.LINK_USER, Integer.toString(admin.getId()));
-        parameters.put(DatabaseElements.LINK_ADMIN, "true");
+      try {
+        if (DatabaseRequest.getInstance().insert(DatabaseElements.GROUP_TABLE, parameters)) {
+          parameters = new HashMap<DatabaseElements, String>(3);
+          parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
+          parameters.put(DatabaseElements.LINK_USER, Integer.toString(admin.getId()));
+          parameters.put(DatabaseElements.LINK_ADMIN, "true");
 
-        if (!DatabaseRequest.getInstance().insert(DatabaseElements.LINK_TABLE, parameters)) {
-          if (DatabaseRequest.getInstance().remove(DatabaseElements.GROUP_TABLE,
-              DatabaseElements.ID_GROUP, Integer.toString(id))) {
-            throw new DatabaseException(
-                "Une erreur est survenue dans la base de données, le groupe n'a pas été créé.");
-          } else {
-            throw new DatabaseException(
-                "Une erreur est survenue dans la base de données, le groupe a été créé,"
-                    + " mais pas le lien entre le groupe et l'administrateur, créant un"
-                    + " état instable. Il est conseillé de restaurer manuellement"
-                    + " l'intégrité de la base de données.");
+          if (!DatabaseRequest.getInstance().insert(DatabaseElements.LINK_TABLE, parameters)) {
+            parameters = new HashMap<DatabaseElements, String>(1);
+            parameters.put(DatabaseElements.ID_GROUP, Integer.toString(id));
+            if (DatabaseRequest.getInstance().remove(DatabaseElements.GROUP_TABLE, parameters)) {
+              throw new DatabaseException(
+                  "Une erreur est survenue dans la base de donnÃ©es, le groupe n'a pas Ã©tÃ© crÃ©Ã©.");
+            } else {
+              throw new DatabaseException(
+                  "Une erreur est survenue dans la base de donnÃ©es, le groupe a Ã©tÃ© crÃ©Ã©,"
+                      + " mais pas le lien entre le groupe et l'administrateur, crÃ©ant un"
+                      + " Ã©tat instable. Il est conseillÃ© de restaurer manuellement"
+                      + " l'intÃ©gritÃ© de la base de donnÃ©es.");
+            }
           }
+        } else {
+          throw new DatabaseException(
+              "Une erreur est survenue dans la base de donnÃ©es, le groupe n'a pas Ã©tÃ© crÃ©Ã©.");
         }
-      } else {
+      } catch (NoDataSourceException e) {
         throw new DatabaseException(
-            "Une erreur est survenue dans la base de données, le groupe n'a pas été créé.");
+            "La source des donnÃ©es n'a pas Ã©tÃ© dÃ©finie, aucune requÃªte ne peut Ãªtre effectuÃ©e.");
       }
     } else {
-      throw new NoRightException("Vous n'avez pas les droits pour créer un groupe.");
+      throw new NoRightException("Vous n'avez pas les droits pour crÃ©er un groupe.");
     }
   }
 
@@ -256,18 +279,23 @@ public class Group extends DefaultController {
   public void setGroupName(String groupName, User currentUser) throws NoRightException,
       DatabaseException {
     if (currentUser.getSuperAdmin()) {
-      HashMap<String, String> set = new HashMap<String, String>(1);
+      HashMap<DatabaseElements, String> set = new HashMap<DatabaseElements, String>(1);
       set.put(DatabaseElements.GROUP_NAME, groupName);
 
-      HashMap<String, String> parameters = new HashMap<String, String>(1);
+      HashMap<DatabaseElements, String> parameters = new HashMap<DatabaseElements, String>(1);
       parameters.put(DatabaseElements.ID_GROUP, Integer.toString(id));
 
-      if (DatabaseRequest.getInstance().update(DatabaseElements.GROUP_TABLE, set, parameters)) {
-        this.groupName = groupName;
-      } else {
+      try {
+        if (DatabaseRequest.getInstance().update(DatabaseElements.GROUP_TABLE, set, parameters)) {
+          this.groupName = groupName;
+        } else {
+          throw new DatabaseException(
+              "Une erreur est survenue avec la base de donnÃ©es, le nom du groupe n'a pas"
+                  + " Ã©tÃ© changÃ©.");
+        }
+      } catch (NoDataSourceException e) {
         throw new DatabaseException(
-            "Une erreur est survenue avec la base de données, le nom du groupe n'a pas"
-                + " été changé.");
+            "La source des donnÃ©es n'a pas Ã©tÃ© dÃ©finie, aucune requÃªte ne peut Ãªtre effectuÃ©e.");
       }
     } else {
       throw new NoRightException("Vous n'avez pas les droits pour modifier le nom d'un groupe.");
@@ -303,22 +331,27 @@ public class Group extends DefaultController {
   public void setPersistence(boolean persistence, User currentUser) throws NoRightException,
       DatabaseException {
     if (currentUser.getSuperAdmin()) {
-      HashMap<String, String> set = new HashMap<String, String>(1);
+      HashMap<DatabaseElements, String> set = new HashMap<DatabaseElements, String>(1);
       set.put(DatabaseElements.GROUP_PERSISTENCE, Boolean.toString(persistence));
 
-      HashMap<String, String> parameters = new HashMap<String, String>(1);
+      HashMap<DatabaseElements, String> parameters = new HashMap<DatabaseElements, String>(1);
       parameters.put(DatabaseElements.ID_GROUP, Integer.toString(id));
 
-      if (DatabaseRequest.getInstance().update(DatabaseElements.GROUP_TABLE, set, parameters)) {
-        this.persistence = persistence;
-      } else {
+      try {
+        if (DatabaseRequest.getInstance().update(DatabaseElements.GROUP_TABLE, set, parameters)) {
+          this.persistence = persistence;
+        } else {
+          throw new DatabaseException(
+              "Une erreur est survenue avec la base de donnÃ©es, la persistence des donnÃ©es"
+                  + " n'a pas Ã©tÃ© changÃ©e.");
+        }
+      } catch (NoDataSourceException e) {
         throw new DatabaseException(
-            "Une erreur est survenue avec la base de données, la persistence des données"
-                + " n'a pas été changée.");
+            "La source des donnÃ©es n'a pas Ã©tÃ© dÃ©finie, aucune requÃªte ne peut Ãªtre effectuÃ©e.");
       }
     } else {
       throw new NoRightException(
-          "Vous n'avez pas les droits pour modifier la persistence des données d'un groupe.");
+          "Vous n'avez pas les droits pour modifier la persistence des donnÃ©es d'un groupe.");
     }
   }
 
@@ -351,7 +384,7 @@ public class Group extends DefaultController {
    * 
    * @see Group#bundles
    */
-  public ArrayList<BundleOrbisServer> getBundles() {
+  public ArrayList<BundleOrbisserver> getBundles() {
     return bundles;
   }
 
@@ -379,54 +412,60 @@ public class Group extends DefaultController {
    */
   public void addUser(User user, User currentUser) throws NoRightException, DatabaseException,
       AdminException {
-    if (!isUser(user)) {
-      if (isAdmin(user)) {
-        if (currentUser.getSuperAdmin()) {
-          if (admins.size() > 1) {
-            HashMap<String, String> set = new HashMap<String, String>(1);
-            set.put(DatabaseElements.LINK_ADMIN, "false");
+    try {
+      if (!isUser(user)) {
+        if (isAdmin(user)) {
+          if (currentUser.getSuperAdmin()) {
+            if (admins.size() > 1) {
+              HashMap<DatabaseElements, String> set = new HashMap<DatabaseElements, String>(1);
+              set.put(DatabaseElements.LINK_ADMIN, "false");
 
-            HashMap<String, String> parameters = new HashMap<String, String>(2);
+              HashMap<DatabaseElements, String> parameters = new HashMap<DatabaseElements, String>(
+                  2);
+              parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
+              parameters.put(DatabaseElements.LINK_USER, Integer.toString(user.getId()));
+
+              if (DatabaseRequest.getInstance().update(DatabaseElements.LINK_TABLE, set,
+                  parameters)) {
+                deleteAdmin(user);
+                users.add(user);
+              } else {
+                throw new DatabaseException(
+                    "Une erreur est survenue dans la base de donnÃ©e, l'utilisateur est"
+                        + " toujours administrateur du groupe.");
+              }
+            } else {
+              throw new AdminException(
+                  "L'utilisateur est le dernier administrateur du groupe, il ne peut Ãªtre"
+                      + " rÃ©trogradÃ©.");
+            }
+          } else {
+            throw new NoRightException(
+                "Vous n'avez pas les droits pour rÃ©trograder l'administrateur d'un groupe.");
+          }
+        } else {
+          if (isAdmin(currentUser)) {
+            HashMap<DatabaseElements, String> parameters = new HashMap<DatabaseElements, String>(3);
+            parameters.put(DatabaseElements.LINK_ADMIN, "false");
             parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
             parameters.put(DatabaseElements.LINK_USER, Integer.toString(user.getId()));
 
-            if (DatabaseRequest.getInstance().update(DatabaseElements.LINK_TABLE, set,
-                parameters)) {
-              deleteAdmin(user);
+            if (DatabaseRequest.getInstance().insert(DatabaseElements.LINK_TABLE, parameters)) {
               users.add(user);
             } else {
               throw new DatabaseException(
-                  "Une erreur est survenue dans la base de donnée, l'utilisateur est"
-                      + " toujours administrateur du groupe.");
+                  "Une erreur est survenue dans la base de donnÃ©es, l'utilisateur n'a pas"
+                      + " Ã©tÃ© ajoutÃ© au groupe.");
             }
           } else {
-            throw new AdminException(
-                "L'utilisateur est le dernier administrateur du groupe, il ne peut être"
-                    + " rétrogradé.");
+            throw new NoRightException(
+                "Vous n'avez pas les droits par ajouter un utilisateur au groupe.");
           }
-        } else {
-          throw new NoRightException(
-              "Vous n'avez pas les droits pour rétrograder l'administrateur d'un groupe.");
-        }
-      } else {
-        if (isAdmin(currentUser)) {
-          HashMap<String, String> parameters = new HashMap<String, String>(3);
-          parameters.put(DatabaseElements.LINK_ADMIN, "false");
-          parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
-          parameters.put(DatabaseElements.LINK_USER, Integer.toString(user.getId()));
-
-          if (DatabaseRequest.getInstance().insert(DatabaseElements.LINK_TABLE, parameters)) {
-            users.add(user);
-          } else {
-            throw new DatabaseException(
-                "Une erreur est survenue dans la base de donnée, l'utilisateur n'a pas"
-                    + " été ajouté au groupe.");
-          }
-        } else {
-          throw new NoRightException(
-              "Vous n'avez pas les droits par ajouter un utilisateur au groupe.");
         }
       }
+    } catch (NoDataSourceException e) {
+      throw new DatabaseException(
+          "La source des donnÃ©es n'a pas Ã©tÃ© dÃ©finie, aucune requÃªte ne peut Ãªtre effectuÃ©e.");
     }
   }
 
@@ -446,42 +485,48 @@ public class Group extends DefaultController {
    * @see Group#admins
    */
   public void addAdmin(User admin, User currentUser) throws NoRightException, DatabaseException {
-    if (currentUser.getSuperAdmin()) {
-      if (!isAdmin(admin)) {
-        if (isUser(admin)) {
-          HashMap<String, String> set = new HashMap<String, String>(1);
-          set.put(DatabaseElements.LINK_ADMIN, "true");
+    try {
+      if (currentUser.getSuperAdmin()) {
+        if (!isAdmin(admin)) {
+          if (isUser(admin)) {
+            HashMap<DatabaseElements, String> set = new HashMap<DatabaseElements, String>(1);
+            set.put(DatabaseElements.LINK_ADMIN, "true");
 
-          HashMap<String, String> parameters = new HashMap<String, String>(2);
-          parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
-          parameters.put(DatabaseElements.LINK_USER, Integer.toString(admin.getId()));
+            HashMap<DatabaseElements, String> parameters = new HashMap<DatabaseElements, String>(2);
+            parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
+            parameters.put(DatabaseElements.LINK_USER, Integer.toString(admin.getId()));
 
-          if (DatabaseRequest.getInstance().update(DatabaseElements.LINK_TABLE, set, parameters)) {
-            deleteUser(admin);
-            admins.add(admin);
+            if (DatabaseRequest.getInstance().update(DatabaseElements.LINK_TABLE, set,
+                parameters)) {
+              deleteUser(admin);
+              admins.add(admin);
+            } else {
+              throw new DatabaseException(
+                  "Une erreur est survenue dans la base de donnÃ©es, l'utilisateur n'est pas"
+                      + " devenu administrateur.");
+            }
           } else {
-            throw new DatabaseException(
-                "Une erreur est survenue dans la base de donnée, l'utilisateur n'est pas"
-                    + " devenu administrateur.");
-          }
-        } else {
-          HashMap<String, String> parameters = new HashMap<String, String>(3);
-          parameters.put(DatabaseElements.LINK_ADMIN, "true");
-          parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
-          parameters.put(DatabaseElements.LINK_USER, Integer.toString(admin.getId()));
+            HashMap<DatabaseElements, String> parameters = new HashMap<DatabaseElements, String>(3);
+            parameters.put(DatabaseElements.LINK_ADMIN, "true");
+            parameters.put(DatabaseElements.LINK_GROUP, Integer.toString(id));
+            parameters.put(DatabaseElements.LINK_USER, Integer.toString(admin.getId()));
 
-          if (DatabaseRequest.getInstance().insert(DatabaseElements.LINK_TABLE, parameters)) {
-            admins.add(admin);
-          } else {
-            throw new DatabaseException(
-                "Une erreur est survenue dans la base de donnée, l'utilisateur n'a pas"
-                    + " été ajouté au groupe.");
+            if (DatabaseRequest.getInstance().insert(DatabaseElements.LINK_TABLE, parameters)) {
+              admins.add(admin);
+            } else {
+              throw new DatabaseException(
+                  "Une erreur est survenue dans la base de donnÃ©es, l'utilisateur n'a pas"
+                      + " Ã©tÃ© ajoutÃ© au groupe.");
+            }
           }
         }
+      } else {
+        throw new NoRightException(
+            "Vous n'avez pas les droits pour ajouter un administrateur au groupe.");
       }
-    } else {
-      throw new NoRightException(
-          "Vous n'avez pas les droits pour ajouter un administrateur au groupe.");
+    } catch (NoDataSourceException e) {
+      throw new DatabaseException(
+          "La source des donnÃ©es n'a pas Ã©tÃ© dÃ©finie, aucune requÃªte ne peut Ãªtre effectuÃ©e.");
     }
   }
 
@@ -498,13 +543,13 @@ public class Group extends DefaultController {
    * 
    * @see Group#bundles
    */
-  public void addBundle(BundleOrbisServer bundle, User currentUser) throws NoRightException {
+  public void addBundle(BundleOrbisserver bundle, User currentUser) throws NoRightException {
     if (isAdmin(currentUser)) {
-      // TODO Ajouter des vérifications pour savoir si l'on a déjà ce bundle ou non
+      // TODO Ajouter des vÃ©rifications pour savoir si l'on a dÃ©jÃ  ce bundle ou non
       // lorsque l'on aura plus d'informations sur la classe BundleOrbisServer
       bundles.add(bundle);
 
-      // TODO Ajouter l'insertion en base de données lorsque cette dernière aura une
+      // TODO Ajouter l'insertion en base de donnÃ©es lorsque cette derniÃ¨re aura une
       // liaison entre les tables Group et Bundle
     } else {
       throw new NoRightException("Vous n'avez pas les droits pour ajouter un bundle au groupe.");
@@ -528,8 +573,8 @@ public class Group extends DefaultController {
     if (isAdmin(currentUser)) {
       deleteUser(user);
 
-      // TODO Ajouter la suppression en base de données, lorsque l'on pourra supprimer
-      // des données à partir de plusieurs paramètres
+      // TODO Ajouter la suppression en base de donnÃ©es, lorsque l'on pourra supprimer
+      // des donnÃ©es Ã  partir de plusieurs paramÃ¨tres
     } else {
       throw new NoRightException(
           "Vous n'avez pas les droits pour supprimer un utilisateur du groupe.");
@@ -553,8 +598,8 @@ public class Group extends DefaultController {
     if (currentUser.getSuperAdmin()) {
       deleteAdmin(admin);
 
-      // TODO Ajouter la suppression en base de données, lorsque l'on pourra supprimer
-      // des données à partir de plusieurs paramètres
+      // TODO Ajouter la suppression en base de donnÃ©es, lorsque l'on pourra supprimer
+      // des donnÃ©es Ã  partir de plusieurs paramÃ¨tres
     } else {
       throw new NoRightException(
           "Vous n'avez pas les droits pour supprimer un administrateur du groupe.");
@@ -576,16 +621,16 @@ public class Group extends DefaultController {
   public void leaveGroup(User user) throws AdminException {
     if (isAdmin(user)) {
       if (admins.size() > 1) {
-        // TODO Ajouter la suppression en base de données, lorsque l'on pourra supprimer
-        // des données à partir de plusieurs paramètres
+        // TODO Ajouter la suppression en base de donnÃ©es, lorsque l'on pourra supprimer
+        // des donnÃ©es Ã  partir de plusieurs paramÃ¨tres
         deleteAdmin(user);
       } else {
         throw new AdminException(
-            "Vous ne pouvez pas partir du groupe, vous êtes le seul administrateur.");
+            "Vous ne pouvez pas partir du groupe, vous é»Žes le seul administrateur.");
       }
     } else {
-      // TODO Ajouter la suppression en base de données, lorsque l'on pourra supprimer
-      // des données à partir de plusieurs paramètres
+      // TODO Ajouter la suppression en base de donnÃ©es, lorsque l'on pourra supprimer
+      // des donnÃ©es Ã  partir de plusieurs paramÃ¨tres
       deleteUser(user);
     }
   }
@@ -603,11 +648,11 @@ public class Group extends DefaultController {
    * 
    * @see Group#bundles
    */
-  public void removeBundle(BundleOrbisServer bundle, User currentUser) throws NoRightException {
+  public void removeBundle(BundleOrbisserver bundle, User currentUser) throws NoRightException {
     if (isAdmin(currentUser)) {
       bundles.remove(bundle);
 
-      // TODO Ajouter la suppression en base de données lorsque cette dernière aura
+      // TODO Ajouter la suppression en base de donnÃ©es lorsque cette derniÃ¨re aura
       // une liaison entre les tables Group et Bundle
     } else {
       throw new NoRightException("Vous n'avez pas les droits pour supprimer un bundle du groupe.");

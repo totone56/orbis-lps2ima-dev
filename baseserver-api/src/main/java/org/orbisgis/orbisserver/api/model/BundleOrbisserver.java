@@ -1,4 +1,4 @@
-package org.orbisgis.orbisserver.api.model ;
+package org.orbisgis.orbisserver.api.model;
 import java.util.List;
 
 /**

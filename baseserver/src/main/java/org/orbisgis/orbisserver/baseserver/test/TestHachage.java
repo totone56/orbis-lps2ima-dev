@@ -1,4 +1,6 @@
-package org.orbisgis.orbisserver.baseserver.model;
+package org.orbisgis.orbisserver.baseserver.test;
+
+import org.orbisgis.orbisserver.baseserver.model.Hachage;
 
 public class TestHachage {
 
