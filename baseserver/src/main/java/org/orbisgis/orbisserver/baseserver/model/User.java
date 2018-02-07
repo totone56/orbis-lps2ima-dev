@@ -9,9 +9,9 @@
  *
  * The GIS group of the DECIDE team is located at :
  *
- * Laboratoire Lab-STICC – CNRS UMR 6285
+ * Laboratoire Lab-STICC 窶� CNRS UMR 6285
  * Equipe DECIDE
- * UNIVERSITÉ DE BRETAGNE-SUD
+ * UNIVERSITﾃ� DE BRETAGNE-SUD
  * Institut Universitaire de Technologie de Vannes
  * 8, Rue Montaigne - BP 561 56017 Vannes Cedex
  *
@@ -47,94 +47,117 @@ import java.util.Map;
  */
 public class User {
 
-    private Integer id;
-    private String username;
-    private String password;
-    private Map<Integer, Boolean> listGroups;
-    private Boolean superAdmin;
+  private int id;
+  private String username;
+  private String password;
+  private Map<Integer, Boolean> listGroups;
+  private Boolean superAdmin;
 
-    /**
-     * @param id
-     * @param username
-     * @param password
-     * @param listGroups
-     * @param superAdmin
-     */
-    public User(Integer id, String username, String password, Map<Integer, Boolean> listGroups, Boolean superAdmin) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.listGroups = listGroups;
-        this.superAdmin = superAdmin;
+  /**
+   * @param id
+   * @param username
+   * @param password
+   * @param listGroups
+   * @param superAdmin
+   */
+  public User(Integer id, String username, String password, Map<Integer, Boolean> listGroups,
+      Boolean superAdmin) {
+    this.id = id;
+    this.username = username;
+    this.password = password;
+    this.listGroups = listGroups;
+    this.superAdmin = superAdmin;
+  }
+
+  public User(int id) {
+    this.id = id;
+  }
+
+  /**
+   * @return
+   */
+  public String getUsername() {
+    return username;
+  }
+
+  /**
+   * @param username
+   */
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  /**
+   * @return
+   */
+  public String getPassword() {
+    return password;
+  }
+
+  /**
+   * @param password
+   */
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  /**
+   * @return
+   */
+  public Map<Integer, Boolean> getListGroups() {
+    return listGroups;
+  }
+
+  /**
+   * @param listGroups
+   */
+  public void setListGroups(Map<Integer, Boolean> listGroups) {
+    this.listGroups = listGroups;
+  }
+
+  /**
+   * @return
+   */
+  public Boolean getSuperAdmin() {
+    return superAdmin;
+  }
+
+  /**
+   * @param superAdmin
+   */
+  public void setSuperAdmin(Boolean superAdmin) {
+    this.superAdmin = superAdmin;
+  }
+
+  /**
+   * @return
+   */
+  public Integer getId() {
+    return id;
+  }
+
+  /**
+   * @param id
+   */
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  @Override
+  public boolean equals(Object user) {
+    if (!(user instanceof User)) {
+      return false;
     }
 
-    /**
-     * @return
-     */
-    public String getUsername() {
-        return username;
+    if (((User) user).id == id) {
+      return true;
+    } else {
+      return false;
     }
+  }
 
-    /**
-     * @param username
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * @return
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return
-     */
-    public Map<Integer, Boolean> getListGroups() {
-        return listGroups;
-    }
-
-    /**
-     * @param listGroups
-     */
-    public void setListGroups(Map<Integer, Boolean> listGroups) {
-        this.listGroups = listGroups;
-    }
-
-    /**
-     * @return
-     */
-    public Boolean getSuperAdmin() {
-        return superAdmin;
-    }
-
-    /**
-     * @param superAdmin
-     */
-    public void setSuperAdmin(Boolean superAdmin) {
-        this.superAdmin = superAdmin;
-    }
-
-    /**
-     * @return
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
+  @Override
+  public int hashCode() {
+    return 42;
+  }
 }

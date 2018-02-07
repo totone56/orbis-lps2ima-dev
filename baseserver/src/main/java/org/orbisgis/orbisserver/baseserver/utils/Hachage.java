@@ -1,4 +1,4 @@
-package org.orbisgis.orbisserver.baseserver.model;
+package org.orbisgis.orbisserver.baseserver.utils;
 
 import java.security.MessageDigest;
 import java.sql.ResultSet;
@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import org.orbisgis.orbisserver.baseserver.exception.NoDataSourceException;
-import org.orbisgis.orbisserver.baseserver.utils.DatabaseElements;
-import org.orbisgis.orbisserver.baseserver.utils.DatabaseRequest;
 
 public class Hachage {
 

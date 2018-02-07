@@ -1,4 +1,4 @@
-package org.orbisgis.orbisserver.baseserver.test;
+package org.orbisgis.orbisserver.baseserver.model;
 
 import java.util.ArrayList;
 

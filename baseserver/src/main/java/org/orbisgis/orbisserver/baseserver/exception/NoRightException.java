@@ -1,5 +1,7 @@
 package org.orbisgis.orbisserver.baseserver.exception;
 
+import org.orbisgis.orbisserver.baseserver.model.Group;
+
 /**
  * <b>This exception is thrown when an user attempt to do something without the
  * rights to do it.</b>

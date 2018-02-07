@@ -26,7 +26,12 @@ public enum DatabaseElements {
    * The name of the table containing the links between the users and the groups
    * in the database.
    */
-  LINK_TABLE("LinkUserGroup"),
+  LINK_USER_TABLE("LinkUserGroup"),
+  /**
+   * The name of the table containing the links between the bundles and the groups
+   * in the database.
+   */
+  LINK_BUNDLE_TABLE("LinkBundleGroup"),
   /**
    * The name of the IDs in the table of the groups.
    */
@@ -40,9 +45,9 @@ public enum DatabaseElements {
    */
   GROUP_PERSISTENCE("persistance"),
   /**
-   * The name of the groups in the table of the links.
+   * The name of the groups in the table of the links with the users.
    */
-  LINK_GROUP("idGroup"),
+  LINK_USER_GROUP("idGroup"),
   /**
    * The name of the users in the table of the links.
    */
@@ -51,6 +56,17 @@ public enum DatabaseElements {
    * The name of the administrators in the table of the links.
    */
   LINK_ADMIN("admin"),
+  /**
+   * The name of the groups in the table of the links with the bundles.
+   */
+  LINK_BUNDLE_GROUP("idGroup"),
+  /**
+   * The name of the bundles in the table of the links.
+   */
+  LINK_BUNDLE("idBundle"),
+  /**
+   * The name of the administrators in the table of the links.
+   */
   /**
    * The name of the IDs in the table of the users.
    */
