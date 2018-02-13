@@ -224,6 +224,18 @@
             <url>http://repo2.maven.org/maven2</url>
         </repository>
     </repositories>
+
+<repositories>.
+
+                <repository>
+                        <id>osgi-maven-5.1</id>
+                        <url>http://nexus.orbisgis.org/content/repositories/osgi-maven-5.1</url>
+                </repository>
+                <repository>
+                        <id>osgi-maven-5.1-snapshot</id>
+                        <url>http://nexus.orbisgis.org/content/repositories/osgi-maven-5.1-snapshot</url>
+                </repository>
+
     <profiles>
         <profile>
             <id>default</id>
