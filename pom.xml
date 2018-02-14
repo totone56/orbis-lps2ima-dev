@@ -213,7 +213,10 @@
         <url>git@github.com:orbisgis/orbisserver.git</url>
     </scm>
     <repositories>
+
+
      <repository>
+
         <id>osgi-maven-5.1</id>
         <url>http://nexus.orbisgis.org/content/repositories/osgi-maven-5.1</url>
      </repository>
